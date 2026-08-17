@@ -26,6 +26,11 @@ export type CardsStackParamList = {
 export type WalletStackParamList = {
   WalletHome: undefined;
   FundsTransfer: undefined;
+  TransferDirection: undefined;
+  CardToWalletTransfer: undefined;
+  WalletToCardTransfer: undefined;
+  TransferSummary: undefined;
+  TransferResult: undefined;
 };
 
 export type PaymentsStackParamList = {

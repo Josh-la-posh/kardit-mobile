@@ -1,12 +1,14 @@
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Text } from 'react-native';
 
 import { Screen } from '@/components/layout/Screen';
-import { InfoCard } from '@/components/ui/InfoCard';
-import { Select } from '@/components/ui/Select';
-import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
+import { InfoCard } from '@/components/ui/InfoCard';
+import type { WalletStackParamList } from '@/navigation/types';
 
-export function FundsTransferScreen() {
+type Props = NativeStackScreenProps<WalletStackParamList, 'FundsTransfer'>;
+
+export function FundsTransferScreen({ navigation }: Props) {
   return (
     <Screen>
       <InfoCard title="Funds transfer">
@@ -15,10 +17,15 @@ export function FundsTransferScreen() {
           submission, and result states.
         </Text>
       </InfoCard>
-      <Select label="Direction" placeholder="Card to Wallet or Wallet to Card" />
-      <Select label="Card" placeholder="Select eligible UnionPay card" />
-      <Input label="Amount" placeholder="0.00" keyboardType="numeric" />
-      <Button>Preview transfer placeholder</Button>
+      <Button onPress={() => navigation.navigate('TransferDirection')}>
+        Select transfer direction
+      </Button>
+      <Button variant="secondary" onPress={() => navigation.navigate('CardToWalletTransfer')}>
+        Card to wallet
+      </Button>
+      <Button variant="secondary" onPress={() => navigation.navigate('WalletToCardTransfer')}>
+        Wallet to card
+      </Button>
     </Screen>
   );
 }

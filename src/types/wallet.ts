@@ -18,6 +18,13 @@ export type ImporterWallet = {
   status: WalletStatus;
 };
 
+export type ExchangeRate = {
+  fromCurrency: CurrencyCode;
+  rate: string;
+  toCurrency: CurrencyCode;
+  updatedAt: string;
+};
+
 export type WalletTransferDirection = 'card_to_wallet' | 'wallet_to_card';
 
 export type WalletTransferFundingSource = {
@@ -33,6 +40,7 @@ export type WalletTransferSummary = {
   charges?: Money;
   destination: WalletTransferFundingSource;
   direction: WalletTransferDirection;
+  exchangeRate?: ExchangeRate;
   source: WalletTransferFundingSource;
 };
 
@@ -45,4 +53,10 @@ export type WalletTransferRequest = {
 export type WalletTransferResult = {
   reference: string;
   status: TransactionStatus;
+};
+
+export type WalletOverview = {
+  exchangeRates: ExchangeRate[];
+  recentTransfers: WalletTransferResult[];
+  wallet: ImporterWallet;
 };

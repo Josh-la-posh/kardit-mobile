@@ -3,7 +3,13 @@ import type { SupportCase } from '@/types/case';
 import type { ImporterCard, IssuingBank } from '@/types/importer';
 import type { Supplier } from '@/types/supplier';
 import type { ImporterTransaction } from '@/types/transaction';
-import type { ImporterWallet } from '@/types/wallet';
+import type {
+  ExchangeRate,
+  ImporterWallet,
+  WalletOverview,
+  WalletTransferFundingSource,
+  WalletTransferSummary,
+} from '@/types/wallet';
 
 export const mockCards: ImporterCard[] = [
   {
@@ -13,6 +19,14 @@ export const mockCards: ImporterCard[] = [
     bankName: 'Sample Issuing Bank',
     status: 'active',
     balance: 'NGN 250,000',
+  },
+  {
+    id: 'card_002',
+    label: 'Supplier payments physical card',
+    type: 'physical',
+    bankName: 'Trade Finance Bank',
+    status: 'active',
+    balance: 'NGN 120,000',
   },
 ];
 
@@ -24,8 +38,51 @@ export const mockIssuingBanks: IssuingBank[] = [
 export const mockWallet: ImporterWallet = {
   id: 'wallet_001',
   accountId: 'account_001',
-  balance: { amount: '250000', currency: 'NGN', formatted: 'NGN 250,000' },
+  balance: { amount: '850000', currency: 'NGN', formatted: 'NGN 850,000' },
   status: 'active',
+};
+
+export const mockExchangeRates: ExchangeRate[] = [
+  {
+    fromCurrency: 'NGN',
+    rate: '0.0048',
+    toCurrency: 'CNY',
+    updatedAt: '2026-08-17T00:00:00.000Z',
+  },
+  {
+    fromCurrency: 'USD',
+    rate: '7.18',
+    toCurrency: 'CNY',
+    updatedAt: '2026-08-17T00:00:00.000Z',
+  },
+];
+
+export const mockWalletFundingSource: WalletTransferFundingSource = {
+  id: mockWallet.id,
+  label: 'Central wallet',
+  type: 'wallet',
+  availableBalance: mockWallet.balance,
+};
+
+export const mockCardFundingSources: WalletTransferFundingSource[] = mockCards.map((card) => ({
+  id: card.id,
+  label: card.label,
+  type: 'card',
+  cardType: card.type,
+  availableBalance: {
+    amount: card.id === 'card_001' ? '250000' : '120000',
+    currency: 'NGN',
+    formatted: card.balance,
+  },
+}));
+
+export const mockTransferSummary: WalletTransferSummary = {
+  amount: { amount: '100000', currency: 'NGN', formatted: 'NGN 100,000' },
+  charges: { amount: '0', currency: 'NGN', formatted: 'NGN 0 placeholder fee' },
+  destination: mockWalletFundingSource,
+  direction: 'card_to_wallet',
+  exchangeRate: mockExchangeRates[0],
+  source: mockCardFundingSources[0],
 };
 
 export const mockSuppliers: Supplier[] = [
@@ -54,7 +111,23 @@ export const mockTransactions: ImporterTransaction[] = [
     status: 'pending',
     type: 'qr_payment',
   },
+  {
+    id: 'txn_002',
+    reference: 'KDT-TXN-002',
+    title: 'Card to wallet transfer',
+    amount: { amount: '100000', currency: 'NGN', formatted: 'NGN 100,000' },
+    createdAt: '2026-08-16T00:00:00.000Z',
+    fundingSourceType: 'card',
+    status: 'completed',
+    type: 'wallet_transfer',
+  },
 ];
+
+export const mockWalletOverview: WalletOverview = {
+  exchangeRates: mockExchangeRates,
+  recentTransfers: [{ reference: 'KDT-TRF-001', status: 'pending' }],
+  wallet: mockWallet,
+};
 
 export const mockCases: SupportCase[] = [
   {
