@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "Kardit Importer",
+    "slug": "kardit-importer-mobile",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "karditimporter",
+    "userInterfaceStyle": "light",
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.kardit.importer"
+    },
+    "android": {
+      "package": "com.kardit.importer"
+    },
+    "extra": {
+      "apiBaseUrl": "https://api.example.invalid",
+      "environment": "development"
+    }
+  }
+}
