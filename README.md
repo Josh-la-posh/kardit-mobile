@@ -67,7 +67,9 @@ Current guarded-routing behavior is intentionally minimal:
 - Phase 1 typed foundation added: wallet, suppliers, payments, documents, cases, account/profile, transaction statuses, and card capability types now exist with typed API service boundaries.
 - Phase 2 auth/provisioning/app-gating foundation added: placeholder session state, account readiness state, centralized app gate calculation, and status routing for onboarding, compliance review, provisioning, and wallet assignment are in place.
 - Phase 3 dashboard/wallet/transfer foundation added: dashboard sections, wallet overview, transfer direction, card-to-wallet, wallet-to-card, transfer summary, and transfer result placeholders are navigable with typed mock data.
+- Phase 4 card issuance/card management foundation added: UnionPay card list/details, card request shell, placeholder actions, card transactions, and CMS-sensitive-data notices are in place.
 - Real API integration is pending confirmed Kardit Core backend contracts, endpoint paths, request/response shapes, payment authentication, document upload transport, and idempotency rules.
 - Real authentication and onboarding status APIs are pending backend contracts; current sign-in and registration remain demo placeholders.
 - Real wallet APIs, transfer validation, transfer limits, fees, exchange rates, submission, idempotency, and balance updates are pending backend contracts.
+- Real card APIs, issuance/add-card rules, CMS sensitive-data retrieval, card funding, PIN reset, freeze/unfreeze, termination, and card transaction contracts are pending backend confirmation.
 - PRD UI implementation is pending design confirmation; current wallet, supplier, payment, case, account, and transaction detail screens are PRD-ready placeholders only.

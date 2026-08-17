@@ -20,6 +20,11 @@ export type CardsStackParamList = {
   CardsList: undefined;
   CardDetails: { cardId: string };
   CreateCard: undefined;
+  SelectIssuingBank: undefined;
+  SelectCardType: undefined;
+  CardRequestDetails: undefined;
+  ReviewCardRequest: undefined;
+  CardRequestResult: undefined;
   FundCard: { cardId?: string };
 };
 

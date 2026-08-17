@@ -4,9 +4,14 @@ import { Screen } from '@/components/layout/Screen';
 import { Button } from '@/components/ui/Button';
 import { InfoCard } from '@/components/ui/InfoCard';
 import { Select } from '@/components/ui/Select';
-import { mockIssuingBanks } from '@/utils/mockData';
+import { placeholderMaxActiveCards } from '@/features/cards/cardRules';
+import type { CardsStackParamList } from '@/navigation/types';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { mockCards, mockIssuingBanks } from '@/utils/mockData';
 
-export function CreateCardScreen() {
+type Props = NativeStackScreenProps<CardsStackParamList, 'CreateCard'>;
+
+export function CreateCardScreen({ navigation }: Props) {
   return (
     <Screen>
       <InfoCard title="Issuing bank options">
@@ -16,11 +21,14 @@ export function CreateCardScreen() {
         </Text>
       </InfoCard>
       <Text>
-        TODO: Enforce maximum of 6 active importer cards after backend contract is confirmed.
+        TODO: Confirm maximum active card capacity. Placeholder capacity: {mockCards.length}/
+        {placeholderMaxActiveCards}.
       </Text>
       <Select label="Issuing bank" placeholder="Select issuing bank" />
       <Select label="Card type" placeholder="Virtual or physical" />
-      <Button>Create card placeholder</Button>
+      <Button onPress={() => navigation.navigate('SelectIssuingBank')}>
+        Start request flow placeholder
+      </Button>
     </Screen>
   );
 }

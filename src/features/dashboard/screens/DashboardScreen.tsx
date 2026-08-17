@@ -63,6 +63,26 @@ export function DashboardScreen({ navigation }: Props) {
         <Button
           variant="secondary"
           onPress={() =>
+            navigation.navigate('Cards', {
+              screen: 'SelectIssuingBank',
+            })
+          }
+        >
+          Request card
+        </Button>
+        <Button
+          variant="secondary"
+          onPress={() =>
+            navigation.navigate('Cards', {
+              screen: 'CardsList',
+            })
+          }
+        >
+          Manage cards
+        </Button>
+        <Button
+          variant="secondary"
+          onPress={() =>
             navigation.navigate('Wallet', {
               screen: 'WalletToCardTransfer',
             })

@@ -1,6 +1,12 @@
 import type { ImporterAccount } from '@/types/account';
 import type { SupportCase } from '@/types/case';
-import type { ImporterCard, IssuingBank } from '@/types/importer';
+import type {
+  CardRequestResult,
+  CardTransaction,
+  ImporterCard,
+  IssuingBank,
+  VirtualCardSensitiveDetails,
+} from '@/types/importer';
 import type { Supplier } from '@/types/supplier';
 import type { ImporterTransaction } from '@/types/transaction';
 import type {
@@ -19,6 +25,7 @@ export const mockCards: ImporterCard[] = [
     bankName: 'Sample Issuing Bank',
     status: 'active',
     balance: 'NGN 250,000',
+    maskedNumber: '**** **** **** 4821',
   },
   {
     id: 'card_002',
@@ -27,6 +34,7 @@ export const mockCards: ImporterCard[] = [
     bankName: 'Trade Finance Bank',
     status: 'active',
     balance: 'NGN 120,000',
+    maskedNumber: '**** **** **** 1190',
   },
 ];
 
@@ -34,6 +42,37 @@ export const mockIssuingBanks: IssuingBank[] = [
   { id: 'bank_001', name: 'Sample Issuing Bank', supportedCardTypes: ['virtual', 'physical'] },
   { id: 'bank_002', name: 'Trade Finance Bank', supportedCardTypes: ['virtual'] },
 ];
+
+export const mockCardTransactions: Record<string, CardTransaction[]> = {
+  card_001: [
+    {
+      id: 'card_txn_001',
+      amount: 'NGN 45,000',
+      createdAt: '2026-08-17T00:00:00.000Z',
+      description: 'Sample card funding',
+      status: 'completed',
+    },
+    {
+      id: 'card_txn_002',
+      amount: 'CNY 1,000',
+      createdAt: '2026-08-16T00:00:00.000Z',
+      description: 'Sample supplier spend',
+      status: 'pending',
+    },
+  ],
+  card_002: [],
+};
+
+export const mockVirtualCardSensitiveDetails: VirtualCardSensitiveDetails = {
+  cvvPlaceholder: '***',
+  expiryPlaceholder: '**/**',
+  panPlaceholder: '**** **** **** ****',
+};
+
+export const mockCardRequestResult: CardRequestResult = {
+  reference: 'KDT-CARD-REQ-001',
+  status: 'submitted',
+};
 
 export const mockWallet: ImporterWallet = {
   id: 'wallet_001',
