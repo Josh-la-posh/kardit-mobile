@@ -65,5 +65,7 @@ Current guarded-routing behavior is intentionally minimal:
 
 - Boilerplate complete: Expo, TypeScript, navigation, state/query setup, shared UI primitives, and placeholder feature screens are in place.
 - Phase 1 typed foundation added: wallet, suppliers, payments, documents, cases, account/profile, transaction statuses, and card capability types now exist with typed API service boundaries.
+- Phase 2 auth/provisioning/app-gating foundation added: placeholder session state, account readiness state, centralized app gate calculation, and status routing for onboarding, compliance review, provisioning, and wallet assignment are in place.
 - Real API integration is pending confirmed Kardit Core backend contracts, endpoint paths, request/response shapes, payment authentication, document upload transport, and idempotency rules.
+- Real authentication and onboarding status APIs are pending backend contracts; current sign-in and registration remain demo placeholders.
 - PRD UI implementation is pending design confirmation; current wallet, supplier, payment, case, account, and transaction detail screens are PRD-ready placeholders only.

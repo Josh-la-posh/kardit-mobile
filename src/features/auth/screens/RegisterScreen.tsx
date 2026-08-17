@@ -11,6 +11,9 @@ export function RegisterScreen() {
   return (
     <Screen>
       <Text>TODO: Replace with importer registration API contract and verification flow.</Text>
+      <Text>
+        Demo registration currently creates a placeholder ready session for navigation testing.
+      </Text>
       <Input label="Email" placeholder="importer@example.com" />
       <Input label="Password" placeholder="Minimum 8 characters" secureTextEntry />
       <Button onPress={() => void signInPlaceholder()}>Create account</Button>

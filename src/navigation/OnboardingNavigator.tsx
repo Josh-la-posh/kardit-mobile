@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import { AdditionalInformationRequiredScreen } from '@/features/onboarding/screens/AdditionalInformationRequiredScreen';
 import { ApplicantInformationScreen } from '@/features/onboarding/screens/ApplicantInformationScreen';
 import { ApplicationStatusScreen } from '@/features/onboarding/screens/ApplicationStatusScreen';
 import { BusinessProfileScreen } from '@/features/onboarding/screens/BusinessProfileScreen';
@@ -43,6 +44,11 @@ export function OnboardingNavigator() {
         name="ApplicationStatus"
         component={ApplicationStatusScreen}
         options={{ title: 'Application Status' }}
+      />
+      <Stack.Screen
+        name="AdditionalInformationRequired"
+        component={AdditionalInformationRequiredScreen}
+        options={{ title: 'Additional Information' }}
       />
     </Stack.Navigator>
   );

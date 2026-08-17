@@ -13,6 +13,7 @@ export type OnboardingStackParamList = {
   BusinessProfile: undefined;
   ReviewDeclaration: undefined;
   ApplicationStatus: undefined;
+  AdditionalInformationRequired: undefined;
 };
 
 export type CardsStackParamList = {
@@ -66,5 +67,9 @@ export type RootStackParamList = {
   Welcome: undefined;
   Auth: NavigatorScreenParams<AuthStackParamList>;
   Onboarding: NavigatorScreenParams<OnboardingStackParamList>;
+  ApplicationStatus: undefined;
+  AdditionalInformationRequired: undefined;
+  AccountProvisioningPending: undefined;
+  WalletAssignmentPending: undefined;
   Main: NavigatorScreenParams<MainTabParamList>;
 };

@@ -1,4 +1,5 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { Text } from 'react-native';
 
 import { Screen } from '@/components/layout/Screen';
 import { LoginForm } from '@/components/forms/LoginForm';
@@ -13,6 +14,10 @@ export function LoginScreen({ navigation }: Props) {
 
   return (
     <Screen>
+      <Text>
+        Demo sign-in uses placeholder session and readiness state until real auth APIs are
+        confirmed.
+      </Text>
       <LoginForm onSubmit={() => void signInPlaceholder()} />
       <Button variant="ghost" onPress={() => navigation.navigate('ForgotPassword')}>
         Forgot password

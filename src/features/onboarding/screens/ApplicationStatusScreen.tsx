@@ -8,7 +8,10 @@ export function ApplicationStatusScreen() {
   return (
     <Screen>
       <InfoCard title="Under Compliance Review">
-        <Text>Known statuses: {complianceStatuses.join(', ')}.</Text>
+        <Text>
+          PRD-ready placeholder for onboarding and compliance review status. Known statuses:{' '}
+          {complianceStatuses.join(', ')}.
+        </Text>
       </InfoCard>
     </Screen>
   );

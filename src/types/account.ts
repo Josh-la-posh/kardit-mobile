@@ -8,6 +8,7 @@ export type AccountProvisioningStatus =
   | 'additional_information_required'
   | 'approved'
   | 'provisioning'
+  | 'wallet_assignment_pending'
   | 'ready'
   | 'rejected';
 

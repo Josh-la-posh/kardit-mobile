@@ -4,9 +4,14 @@ import { useEffect } from 'react';
 
 import { LoadingState } from '@/components/ui/LoadingState';
 import { WelcomeScreen } from '@/features/auth/screens/WelcomeScreen';
+import { AccountProvisioningPendingScreen } from '@/features/onboarding/screens/AccountProvisioningPendingScreen';
+import { AdditionalInformationRequiredScreen } from '@/features/onboarding/screens/AdditionalInformationRequiredScreen';
+import { ApplicationStatusScreen } from '@/features/onboarding/screens/ApplicationStatusScreen';
+import { WalletAssignmentPendingScreen } from '@/features/onboarding/screens/WalletAssignmentPendingScreen';
 import { useAuthStore } from '@/store/authStore';
 import { colors } from '@/theme';
 
+import { getAppGate } from './appGate';
 import { AuthNavigator } from './AuthNavigator';
 import { MainTabs } from './MainTabs';
 import { OnboardingNavigator } from './OnboardingNavigator';
@@ -16,14 +21,17 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export function RootNavigator() {
   const hydrateAuth = useAuthStore((state) => state.hydrateAuth);
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const accountReadiness = useAuthStore((state) => state.accountReadiness);
   const isHydrating = useAuthStore((state) => state.isHydrating);
+  const session = useAuthStore((state) => state.session);
 
   useEffect(() => {
     void hydrateAuth();
   }, [hydrateAuth]);
 
-  if (isHydrating) {
+  const appGate = getAppGate({ isHydrating, readiness: accountReadiness, session });
+
+  if (appGate === 'loading') {
     return <LoadingState label="Preparing Kardit Importer" />;
   }
 
@@ -35,17 +43,7 @@ export function RootNavigator() {
           headerTintColor: colors.text,
         }}
       >
-        {isAuthenticated ? (
-          <>
-            {/* TODO: Add importer onboarding gating when PRD confirms status and resume rules. */}
-            <Stack.Screen name="Main" component={MainTabs} options={{ headerShown: false }} />
-            <Stack.Screen
-              name="Onboarding"
-              component={OnboardingNavigator}
-              options={{ headerShown: false }}
-            />
-          </>
-        ) : (
+        {appGate === 'unauthenticated' ? (
           <>
             <Stack.Screen
               name="Welcome"
@@ -53,6 +51,45 @@ export function RootNavigator() {
               options={{ headerShown: false }}
             />
             <Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
+          </>
+        ) : appGate === 'onboarding_required' ? (
+          <Stack.Screen
+            name="Onboarding"
+            component={OnboardingNavigator}
+            options={{ headerShown: false }}
+          />
+        ) : appGate === 'compliance_review' ? (
+          <Stack.Screen
+            name="ApplicationStatus"
+            component={ApplicationStatusScreen}
+            options={{ title: 'Application Status' }}
+          />
+        ) : appGate === 'additional_information_required' ? (
+          <Stack.Screen
+            name="AdditionalInformationRequired"
+            component={AdditionalInformationRequiredScreen}
+            options={{ title: 'Additional Information' }}
+          />
+        ) : appGate === 'provisioning_pending' ? (
+          <Stack.Screen
+            name="AccountProvisioningPending"
+            component={AccountProvisioningPendingScreen}
+            options={{ title: 'Account Provisioning' }}
+          />
+        ) : appGate === 'wallet_pending' ? (
+          <Stack.Screen
+            name="WalletAssignmentPending"
+            component={WalletAssignmentPendingScreen}
+            options={{ title: 'Wallet Assignment' }}
+          />
+        ) : (
+          <>
+            <Stack.Screen name="Main" component={MainTabs} options={{ headerShown: false }} />
+            <Stack.Screen
+              name="Onboarding"
+              component={OnboardingNavigator}
+              options={{ headerShown: false }}
+            />
           </>
         )}
       </Stack.Navigator>
