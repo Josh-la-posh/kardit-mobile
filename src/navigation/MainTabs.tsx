@@ -1,12 +1,17 @@
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import { AccountNavigator } from '@/navigation/AccountNavigator';
+import { CasesNavigator } from '@/navigation/CasesNavigator';
 import { CardsNavigator } from '@/navigation/CardsNavigator';
 import { DashboardScreen } from '@/features/dashboard/screens/DashboardScreen';
+import { PaymentsNavigator } from '@/navigation/PaymentsNavigator';
 import { ProfileScreen } from '@/features/profile/screens/ProfileScreen';
 import { SupportScreen } from '@/features/profile/screens/SupportScreen';
-import { TransactionsScreen } from '@/features/transactions/screens/TransactionsScreen';
+import { SuppliersScreen } from '@/features/suppliers/screens/SuppliersScreen';
 import { colors } from '@/theme';
+import { TransactionsNavigator } from '@/navigation/TransactionsNavigator';
+import { WalletNavigator } from '@/navigation/WalletNavigator';
 
 import type { MainTabParamList } from './types';
 
@@ -15,8 +20,13 @@ const Tab = createBottomTabNavigator<MainTabParamList>();
 const iconForRoute = (routeName: keyof MainTabParamList) => {
   const icons = {
     Dashboard: 'grid-outline',
+    Wallet: 'wallet-outline',
     Cards: 'card-outline',
+    Suppliers: 'people-outline',
+    Payments: 'swap-horizontal-outline',
     Transactions: 'receipt-outline',
+    Cases: 'chatbox-ellipses-outline',
+    Account: 'person-circle-outline',
     Profile: 'person-outline',
     Support: 'help-circle-outline',
   } as const;
@@ -36,8 +46,13 @@ export function MainTabs() {
       })}
     >
       <Tab.Screen name="Dashboard" component={DashboardScreen} />
+      <Tab.Screen name="Wallet" component={WalletNavigator} />
       <Tab.Screen name="Cards" component={CardsNavigator} />
-      <Tab.Screen name="Transactions" component={TransactionsScreen} />
+      <Tab.Screen name="Suppliers" component={SuppliersScreen} />
+      <Tab.Screen name="Payments" component={PaymentsNavigator} />
+      <Tab.Screen name="Transactions" component={TransactionsNavigator} />
+      <Tab.Screen name="Cases" component={CasesNavigator} />
+      <Tab.Screen name="Account" component={AccountNavigator} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
       <Tab.Screen name="Support" component={SupportScreen} />
     </Tab.Navigator>

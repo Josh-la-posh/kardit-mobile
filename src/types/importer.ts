@@ -3,6 +3,15 @@ export type ComplianceStatus =
 
 export type CardType = 'virtual' | 'physical';
 
+export type CardOperation =
+  'activate' | 'freeze' | 'unfreeze' | 'terminate' | 'reset_pin' | 'fund' | 'view_transactions';
+
+export type CardCapability = {
+  operation: CardOperation;
+  permitted: boolean;
+  reason?: string;
+};
+
 export type ImporterCard = {
   id: string;
   label: string;
@@ -10,6 +19,7 @@ export type ImporterCard = {
   bankName: string;
   status: 'active' | 'pending' | 'frozen';
   balance: string;
+  capabilities?: CardCapability[];
 };
 
 export type IssuingBank = {

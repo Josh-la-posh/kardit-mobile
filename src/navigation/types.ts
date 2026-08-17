@@ -22,10 +22,42 @@ export type CardsStackParamList = {
   FundCard: { cardId?: string };
 };
 
+export type WalletStackParamList = {
+  WalletHome: undefined;
+  FundsTransfer: undefined;
+};
+
+export type PaymentsStackParamList = {
+  PaymentsHome: undefined;
+  QrPayment: undefined;
+  BankAccountPayment: undefined;
+};
+
+export type TransactionsStackParamList = {
+  TransactionsHome: undefined;
+  TransactionDetails: { transactionId: string };
+};
+
+export type CasesStackParamList = {
+  CasesHome: undefined;
+  CreateCase: undefined;
+  CaseDetails: { caseId: string };
+};
+
+export type AccountStackParamList = {
+  AccountHome: undefined;
+  AccountDetails: undefined;
+};
+
 export type MainTabParamList = {
   Dashboard: undefined;
+  Wallet: NavigatorScreenParams<WalletStackParamList>;
   Cards: NavigatorScreenParams<CardsStackParamList>;
-  Transactions: undefined;
+  Suppliers: undefined;
+  Payments: NavigatorScreenParams<PaymentsStackParamList>;
+  Transactions: NavigatorScreenParams<TransactionsStackParamList>;
+  Cases: NavigatorScreenParams<CasesStackParamList>;
+  Account: NavigatorScreenParams<AccountStackParamList>;
   Profile: undefined;
   Support: undefined;
 };
