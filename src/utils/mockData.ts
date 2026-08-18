@@ -7,6 +7,13 @@ import type {
   IssuingBank,
   VirtualCardSensitiveDetails,
 } from '@/types/importer';
+import type {
+  PaymentFundingSource,
+  PaymentResult,
+  PaymentRouteOption,
+  PaymentSummary,
+  QrProcessingResult,
+} from '@/types/payment';
 import type { Supplier } from '@/types/supplier';
 import type { ImporterTransaction } from '@/types/transaction';
 import type {
@@ -132,12 +139,74 @@ export const mockSuppliers: Supplier[] = [
       accountNumber: '0000000000',
       bankName: 'Sample China Bank',
     },
+    contactEmail: 'accounts@yiwutrading.example',
+    contactPhone: '+86 000 0000 0000',
+    country: 'China',
     createdAt: '2026-08-17T00:00:00.000Z',
     defaultCurrency: 'CNY',
     displayName: 'Yiwu Trading Co.',
     paymentMethods: ['bank_account', 'qr'],
+    reusable: true,
+    validationStatus: 'verified',
+  },
+  {
+    id: 'supplier_002',
+    bankAccount: {
+      accountName: 'Guangzhou Parts Market',
+      accountNumber: '1111111111',
+      bankName: 'Sample Merchant Bank',
+    },
+    contactEmail: 'sales@gzparts.example',
+    country: 'China',
+    createdAt: '2026-08-16T00:00:00.000Z',
+    defaultCurrency: 'CNY',
+    displayName: 'Guangzhou Parts Market',
+    paymentMethods: ['bank_account'],
+    reusable: true,
+    validationStatus: 'pending',
   },
 ];
+
+export const mockPaymentRoutes: PaymentRouteOption[] = [
+  {
+    description: 'Supported, readable QR payments within placeholder threshold.',
+    label: 'QR payment',
+    route: 'unionpay_qr',
+  },
+  {
+    description: 'Supplier bank-account payment for unsupported QR or bank details.',
+    label: 'Supplier bank account',
+    route: 'supplier_bank_account',
+  },
+];
+
+export const mockPaymentFundingSources: PaymentFundingSource[] = [
+  mockWalletFundingSource,
+  ...mockCardFundingSources,
+];
+
+export const mockQrProcessingResult: QrProcessingResult = {
+  invoiceDocumentId: 'doc_invoice_placeholder',
+  paymentAmount: { amount: '1000', currency: 'CNY', formatted: 'CNY 1,000' },
+  qrReference: 'QR-PLACEHOLDER-001',
+  recommendedRoute: 'unionpay_qr',
+  status: 'readable',
+  supplier: mockSuppliers[0],
+};
+
+export const mockPaymentSummary: PaymentSummary = {
+  amount: { amount: '1000', currency: 'CNY', formatted: 'CNY 1,000' },
+  documentsRequired: false,
+  fundingSource: mockCardFundingSources[0],
+  route: 'unionpay_qr',
+  supplier: mockSuppliers[0],
+};
+
+export const mockPaymentResult: PaymentResult = {
+  reference: 'KDT-PAY-001',
+  status: 'pending',
+  transactionId: 'txn_001',
+};
 
 export const mockTransactions: ImporterTransaction[] = [
   {

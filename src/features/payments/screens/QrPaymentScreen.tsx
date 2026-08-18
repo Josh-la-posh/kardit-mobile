@@ -1,10 +1,14 @@
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Text } from 'react-native';
 
 import { Screen } from '@/components/layout/Screen';
 import { Button } from '@/components/ui/Button';
 import { InfoCard } from '@/components/ui/InfoCard';
+import type { PaymentsStackParamList } from '@/navigation/types';
 
-export function QrPaymentScreen() {
+type Props = NativeStackScreenProps<PaymentsStackParamList, 'QrPayment'>;
+
+export function QrPaymentScreen({ navigation }: Props) {
   return (
     <Screen>
       <InfoCard title="QR payment">
@@ -13,8 +17,10 @@ export function QrPaymentScreen() {
           details, card selection, payment summary, authentication, and result states.
         </Text>
       </InfoCard>
-      <Button>Scan QR placeholder</Button>
-      <Button variant="secondary">Upload QR placeholder</Button>
+      <Button onPress={() => navigation.navigate('QrScanUpload')}>Scan QR placeholder</Button>
+      <Button variant="secondary" onPress={() => navigation.navigate('QrScanUpload')}>
+        Upload QR placeholder
+      </Button>
     </Screen>
   );
 }

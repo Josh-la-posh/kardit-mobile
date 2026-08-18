@@ -5,6 +5,12 @@ import type { Money } from './wallet';
 
 export type PaymentRoute = 'unionpay_qr' | 'supplier_bank_account';
 
+export type PaymentRouteOption = {
+  description: string;
+  label: string;
+  route: PaymentRoute;
+};
+
 export type PaymentFundingSource = {
   id: string;
   label: string;
@@ -30,6 +36,12 @@ export type PaymentSummary = {
   fundingSource: PaymentFundingSource;
   route: PaymentRoute;
   supplier: Supplier;
+};
+
+export type PaymentAuthenticationRequest = {
+  challengeId: string;
+  placeholderCode: string;
+  transactionId: string;
 };
 
 export type QrPaymentRequest = {

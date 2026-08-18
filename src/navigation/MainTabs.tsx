@@ -8,7 +8,7 @@ import { DashboardScreen } from '@/features/dashboard/screens/DashboardScreen';
 import { PaymentsNavigator } from '@/navigation/PaymentsNavigator';
 import { ProfileScreen } from '@/features/profile/screens/ProfileScreen';
 import { SupportScreen } from '@/features/profile/screens/SupportScreen';
-import { SuppliersScreen } from '@/features/suppliers/screens/SuppliersScreen';
+import { SuppliersNavigator } from '@/navigation/SuppliersNavigator';
 import { colors } from '@/theme';
 import { TransactionsNavigator } from '@/navigation/TransactionsNavigator';
 import { WalletNavigator } from '@/navigation/WalletNavigator';
@@ -48,7 +48,7 @@ export function MainTabs() {
       <Tab.Screen name="Dashboard" component={DashboardScreen} />
       <Tab.Screen name="Wallet" component={WalletNavigator} />
       <Tab.Screen name="Cards" component={CardsNavigator} />
-      <Tab.Screen name="Suppliers" component={SuppliersScreen} />
+      <Tab.Screen name="Suppliers" component={SuppliersNavigator} />
       <Tab.Screen name="Payments" component={PaymentsNavigator} />
       <Tab.Screen name="Transactions" component={TransactionsNavigator} />
       <Tab.Screen name="Cases" component={CasesNavigator} />

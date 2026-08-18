@@ -113,6 +113,16 @@ export function DashboardScreen({ navigation }: Props) {
         <Button
           variant="secondary"
           onPress={() =>
+            navigation.navigate('Suppliers', {
+              screen: 'SuppliersHome',
+            })
+          }
+        >
+          Manage suppliers
+        </Button>
+        <Button
+          variant="secondary"
+          onPress={() =>
             navigation.navigate('Payments', {
               screen: 'QrPayment',
             })

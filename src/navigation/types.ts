@@ -38,10 +38,24 @@ export type WalletStackParamList = {
   TransferResult: undefined;
 };
 
+export type SuppliersStackParamList = {
+  SuppliersHome: undefined;
+  SupplierDetails: { supplierId: string };
+  CreateSupplier: undefined;
+  EditSupplier: { supplierId: string };
+  SupplierValidation: { supplierId?: string };
+};
+
 export type PaymentsStackParamList = {
   PaymentsHome: undefined;
   QrPayment: undefined;
+  QrScanUpload: undefined;
   BankAccountPayment: undefined;
+  PaymentDetails: undefined;
+  FundingSourceSelection: undefined;
+  PaymentSummary: undefined;
+  PaymentAuthentication: undefined;
+  PaymentResult: undefined;
 };
 
 export type TransactionsStackParamList = {
@@ -64,7 +78,7 @@ export type MainTabParamList = {
   Dashboard: undefined;
   Wallet: NavigatorScreenParams<WalletStackParamList>;
   Cards: NavigatorScreenParams<CardsStackParamList>;
-  Suppliers: undefined;
+  Suppliers: NavigatorScreenParams<SuppliersStackParamList>;
   Payments: NavigatorScreenParams<PaymentsStackParamList>;
   Transactions: NavigatorScreenParams<TransactionsStackParamList>;
   Cases: NavigatorScreenParams<CasesStackParamList>;
