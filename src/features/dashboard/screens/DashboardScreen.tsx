@@ -43,9 +43,18 @@ export function DashboardScreen({ navigation }: Props) {
           />
         ) : (
           mockTransactions.slice(0, 3).map((transaction) => (
-            <Text key={transaction.id}>
+            <Button
+              key={transaction.id}
+              variant="ghost"
+              onPress={() =>
+                navigation.navigate('Transactions', {
+                  screen: 'TransactionDetails',
+                  params: { transactionId: transaction.id },
+                })
+              }
+            >
               {transaction.title}: {transaction.amount.formatted} ({transaction.status})
-            </Text>
+            </Button>
           ))
         )}
       </InfoCard>
@@ -139,6 +148,16 @@ export function DashboardScreen({ navigation }: Props) {
           }
         >
           View transactions
+        </Button>
+        <Button
+          variant="ghost"
+          onPress={() =>
+            navigation.navigate('Documents', {
+              screen: 'DocumentsHome',
+            })
+          }
+        >
+          View documents
         </Button>
       </InfoCard>
     </Screen>

@@ -5,6 +5,7 @@ import { AccountNavigator } from '@/navigation/AccountNavigator';
 import { CasesNavigator } from '@/navigation/CasesNavigator';
 import { CardsNavigator } from '@/navigation/CardsNavigator';
 import { DashboardScreen } from '@/features/dashboard/screens/DashboardScreen';
+import { DocumentsNavigator } from '@/navigation/DocumentsNavigator';
 import { PaymentsNavigator } from '@/navigation/PaymentsNavigator';
 import { ProfileScreen } from '@/features/profile/screens/ProfileScreen';
 import { SupportScreen } from '@/features/profile/screens/SupportScreen';
@@ -25,6 +26,7 @@ const iconForRoute = (routeName: keyof MainTabParamList) => {
     Suppliers: 'people-outline',
     Payments: 'swap-horizontal-outline',
     Transactions: 'receipt-outline',
+    Documents: 'document-text-outline',
     Cases: 'chatbox-ellipses-outline',
     Account: 'person-circle-outline',
     Profile: 'person-outline',
@@ -51,6 +53,7 @@ export function MainTabs() {
       <Tab.Screen name="Suppliers" component={SuppliersNavigator} />
       <Tab.Screen name="Payments" component={PaymentsNavigator} />
       <Tab.Screen name="Transactions" component={TransactionsNavigator} />
+      <Tab.Screen name="Documents" component={DocumentsNavigator} />
       <Tab.Screen name="Cases" component={CasesNavigator} />
       <Tab.Screen name="Account" component={AccountNavigator} />
       <Tab.Screen name="Profile" component={ProfileScreen} />

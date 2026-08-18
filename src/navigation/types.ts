@@ -63,6 +63,14 @@ export type TransactionsStackParamList = {
   TransactionDetails: { transactionId: string };
 };
 
+export type DocumentsStackParamList = {
+  DocumentsHome: undefined;
+  DocumentDetails: { documentId: string };
+  UploadDocument: { transactionId?: string };
+  DocumentLink: { documentId?: string; transactionId?: string };
+  DocumentStatus: { documentId?: string };
+};
+
 export type CasesStackParamList = {
   CasesHome: undefined;
   CreateCase: undefined;
@@ -81,6 +89,7 @@ export type MainTabParamList = {
   Suppliers: NavigatorScreenParams<SuppliersStackParamList>;
   Payments: NavigatorScreenParams<PaymentsStackParamList>;
   Transactions: NavigatorScreenParams<TransactionsStackParamList>;
+  Documents: NavigatorScreenParams<DocumentsStackParamList>;
   Cases: NavigatorScreenParams<CasesStackParamList>;
   Account: NavigatorScreenParams<AccountStackParamList>;
   Profile: undefined;

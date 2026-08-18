@@ -18,6 +18,12 @@ export function PaymentSummaryScreen({ navigation }: Props) {
         <Text>Funding source: {mockPaymentSummary.fundingSource.label}</Text>
         <Text>Documents required: {mockPaymentSummary.documentsRequired ? 'Yes' : 'No'}</Text>
       </InfoCard>
+      <Button
+        variant="secondary"
+        onPress={() => navigation.getParent()?.navigate('Documents', { screen: 'UploadDocument' })}
+      >
+        Add required document placeholder
+      </Button>
       <Button onPress={() => navigation.navigate('PaymentAuthentication')}>
         Continue to authentication placeholder
       </Button>

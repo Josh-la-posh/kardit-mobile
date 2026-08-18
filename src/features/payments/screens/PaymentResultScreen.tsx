@@ -17,6 +17,17 @@ export function PaymentResultScreen({ navigation }: Props) {
         <Text>Status: {mockPaymentResult.status}</Text>
         <Text>Real submission and status polling are pending Kardit Core contracts.</Text>
       </InfoCard>
+      <Button
+        variant="secondary"
+        onPress={() =>
+          navigation.getParent()?.navigate('Transactions', {
+            screen: 'TransactionDetails',
+            params: { transactionId: mockPaymentResult.transactionId },
+          })
+        }
+      >
+        View transaction placeholder
+      </Button>
       <Button onPress={() => navigation.navigate('PaymentsHome')}>Done</Button>
     </Screen>
   );

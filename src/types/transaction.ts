@@ -1,4 +1,5 @@
 import type { ComplianceDocument } from './document';
+import type { PaymentRoute } from './payment';
 import type { Money } from './wallet';
 
 export type TransactionStatus = 'initiated' | 'processing' | 'pending' | 'completed' | 'failed';
@@ -14,10 +15,20 @@ export type ImporterTransaction = {
   title: string;
   amount: Money;
   createdAt: string;
+  fundingSourceLabel?: string;
   fundingSourceType: TransactionFundingSourceType;
+  paymentRoute?: PaymentRoute;
+  relatedRecordLabel?: string;
   status: TransactionStatus;
   type: TransactionType;
   documents?: ComplianceDocument[];
+};
+
+export type TransactionTimelineItem = {
+  id: string;
+  label: string;
+  occurredAt: string;
+  status: TransactionStatus;
 };
 
 export type TransactionFilters = {

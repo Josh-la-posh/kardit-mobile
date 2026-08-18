@@ -1,5 +1,6 @@
 import type { ImporterAccount } from '@/types/account';
 import type { SupportCase } from '@/types/case';
+import type { ComplianceDocument, ComplianceDocumentRequirement } from '@/types/document';
 import type {
   CardRequestResult,
   CardTransaction,
@@ -15,7 +16,7 @@ import type {
   QrProcessingResult,
 } from '@/types/payment';
 import type { Supplier } from '@/types/supplier';
-import type { ImporterTransaction } from '@/types/transaction';
+import type { ImporterTransaction, TransactionTimelineItem } from '@/types/transaction';
 import type {
   ExchangeRate,
   ImporterWallet,
@@ -215,7 +216,10 @@ export const mockTransactions: ImporterTransaction[] = [
     title: 'Sample supplier payment',
     amount: { amount: '1000', currency: 'CNY', formatted: 'CNY 1,000' },
     createdAt: '2026-08-17T00:00:00.000Z',
+    fundingSourceLabel: 'Procurement virtual card',
     fundingSourceType: 'card',
+    paymentRoute: 'unionpay_qr',
+    relatedRecordLabel: 'Yiwu Trading Co.',
     status: 'pending',
     type: 'qr_payment',
   },
@@ -225,11 +229,76 @@ export const mockTransactions: ImporterTransaction[] = [
     title: 'Card to wallet transfer',
     amount: { amount: '100000', currency: 'NGN', formatted: 'NGN 100,000' },
     createdAt: '2026-08-16T00:00:00.000Z',
+    fundingSourceLabel: 'Supplier payments physical card',
     fundingSourceType: 'card',
+    relatedRecordLabel: 'Central wallet',
     status: 'completed',
     type: 'wallet_transfer',
   },
 ];
+
+export const mockComplianceDocuments: ComplianceDocument[] = [
+  {
+    id: 'doc_001',
+    fileName: 'yiwu-invoice-placeholder.pdf',
+    linkedPaymentId: 'payment_001',
+    mimeType: 'application/pdf',
+    required: false,
+    status: 'validated',
+    transactionId: 'txn_001',
+    type: 'invoice',
+    uploadedAt: '2026-08-17T00:00:00.000Z',
+  },
+  {
+    expiresAt: '2026-12-31T00:00:00.000Z',
+    id: 'doc_002',
+    fileName: 'purchase-order-placeholder.pdf',
+    linkedPaymentId: 'payment_002',
+    mimeType: 'application/pdf',
+    rejectionReason: 'Additional supplier invoice detail placeholder.',
+    required: true,
+    status: 'rejected',
+    transactionId: 'txn_003',
+    type: 'purchase_order',
+    uploadedAt: '2026-08-15T00:00:00.000Z',
+  },
+];
+
+export const mockRequiredDocumentRules: ComplianceDocumentRequirement[] = [
+  { documentType: 'invoice', required: true, ruleSource: 'core_placeholder' },
+  { documentType: 'purchase_order', required: true, ruleSource: 'core_placeholder' },
+];
+
+export const mockTransactionTimeline: Record<string, TransactionTimelineItem[]> = {
+  txn_001: [
+    {
+      id: 'timeline_001',
+      label: 'Payment initiated',
+      occurredAt: '2026-08-17T00:00:00.000Z',
+      status: 'initiated',
+    },
+    {
+      id: 'timeline_002',
+      label: 'Processing through placeholder route',
+      occurredAt: '2026-08-17T00:05:00.000Z',
+      status: 'processing',
+    },
+    {
+      id: 'timeline_003',
+      label: 'Pending final status',
+      occurredAt: '2026-08-17T00:10:00.000Z',
+      status: 'pending',
+    },
+  ],
+  txn_002: [
+    {
+      id: 'timeline_004',
+      label: 'Transfer completed',
+      occurredAt: '2026-08-16T00:00:00.000Z',
+      status: 'completed',
+    },
+  ],
+};
 
 export const mockWalletOverview: WalletOverview = {
   exchangeRates: mockExchangeRates,
