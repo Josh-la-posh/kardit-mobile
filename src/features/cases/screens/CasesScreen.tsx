@@ -19,16 +19,24 @@ export function CasesScreen({ navigation }: Props) {
           supporting information, and tracking Service Provider updates.
         </Text>
       </InfoCard>
-      <Button onPress={() => navigation.navigate('CreateCase')}>Create case placeholder</Button>
+      <Button onPress={() => navigation.navigate('CaseType')}>Create case placeholder</Button>
       {mockCases.length === 0 ? (
         <EmptyState title="No cases" message="Support cases and their statuses will appear here." />
       ) : (
-        <Button
-          variant="secondary"
-          onPress={() => navigation.navigate('CaseDetails', { caseId: mockCases[0].id })}
-        >
-          View sample case
-        </Button>
+        mockCases.map((supportCase) => (
+          <InfoCard key={supportCase.id} title={supportCase.title}>
+            <Text>Reference: {supportCase.reference}</Text>
+            <Text>Status: {supportCase.status}</Text>
+            <Text>Priority: {supportCase.priority}</Text>
+            <Text>Updated: {supportCase.lastUpdatedAt}</Text>
+            <Button
+              variant="secondary"
+              onPress={() => navigation.navigate('CaseDetails', { caseId: supportCase.id })}
+            >
+              View case
+            </Button>
+          </InfoCard>
+        ))
       )}
     </Screen>
   );

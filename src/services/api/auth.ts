@@ -13,5 +13,7 @@ export const authApi = {
     apiClient.post<AuthResponse>('/importers/auth/register', request),
   forgotPassword: (email: string) =>
     apiClient.post<{ accepted: boolean }>('/importers/auth/forgot-password', { email }),
+  requestCredentialReset: (email: string) =>
+    apiClient.post<{ accepted: boolean }>('/importers/auth/credential-reset', { email }),
   revokeSession: () => apiClient.post<{ revoked: boolean }>('/importers/auth/session/revoke', {}),
 };

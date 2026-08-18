@@ -15,14 +15,31 @@ export type AccountProvisioningStatus =
 export type ImporterProfile = {
   accountId: string;
   businessName: string;
+  contactAddress?: string;
   email: string;
   fullName: string;
   phoneNumber?: string;
   role: StakeholderRole;
 };
 
+export type AccountCapability = {
+  enabled: boolean;
+  key: string;
+  label: string;
+  reason?: string;
+};
+
+export type AccountSessionInfo = {
+  deviceName?: string;
+  ipAddressPlaceholder?: string;
+  lastLoginAt?: string;
+  sessionId: string;
+};
+
 export type ImporterAccount = {
   id: string;
+  capabilities?: AccountCapability[];
+  sessionInfo?: AccountSessionInfo;
   profile: ImporterProfile;
   provisioningStatus: AccountProvisioningStatus;
   wallet?: ImporterWallet;

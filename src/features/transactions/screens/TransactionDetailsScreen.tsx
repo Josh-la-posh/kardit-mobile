@@ -14,7 +14,7 @@ import {
 
 type Props = NativeStackScreenProps<TransactionsStackParamList, 'TransactionDetails'>;
 
-export function TransactionDetailsScreen({ route }: Props) {
+export function TransactionDetailsScreen({ navigation, route }: Props) {
   const transaction =
     mockTransactions.find((item) => item.id === route.params.transactionId) ?? mockTransactions[0];
   const documents = mockComplianceDocuments.filter(
@@ -57,7 +57,12 @@ export function TransactionDetailsScreen({ route }: Props) {
         ))}
       </InfoCard>
       <Button variant="secondary">Retry placeholder</Button>
-      <Button variant="ghost">Create support case placeholder</Button>
+      <Button
+        variant="ghost"
+        onPress={() => navigation.getParent()?.navigate('Cases', { screen: 'CaseType' })}
+      >
+        Create support case placeholder
+      </Button>
     </Screen>
   );
 }

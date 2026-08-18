@@ -17,7 +17,12 @@ export function ProfileScreen({ navigation }: Props) {
         </Text>
       </InfoCard>
       {navigation ? (
-        <Button onPress={() => navigation.navigate('AccountDetails')}>Account details</Button>
+        <>
+          <Button onPress={() => navigation.navigate('AccountDetails')}>Account details</Button>
+          <Button variant="secondary" onPress={() => navigation.navigate('AccountSecurity')}>
+            Security and access
+          </Button>
+        </>
       ) : null}
     </Screen>
   );

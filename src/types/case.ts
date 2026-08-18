@@ -7,7 +7,15 @@ export type SupportCaseType =
 export type SupportCaseRelatedRecord = {
   id: string;
   label: string;
-  type: 'card' | 'transaction';
+  type: 'card' | 'document' | 'payment' | 'transaction';
+};
+
+export type SupportCasePriority = 'low' | 'normal' | 'high';
+
+export type SupportCaseEvidence = {
+  fileName: string;
+  id: string;
+  uploadedAt?: string;
 };
 
 export type SupportCaseUpdate = {
@@ -15,6 +23,7 @@ export type SupportCaseUpdate = {
   author: 'importer' | 'service_provider';
   createdAt: string;
   message: string;
+  status?: SupportCaseStatus;
 };
 
 export type SupportCase = {
@@ -22,6 +31,10 @@ export type SupportCase = {
   accountId: string;
   createdAt: string;
   description: string;
+  evidence?: SupportCaseEvidence[];
+  informationRequest?: string;
+  lastUpdatedAt: string;
+  priority: SupportCasePriority;
   reference: string;
   relatedRecord?: SupportCaseRelatedRecord;
   status: SupportCaseStatus;
@@ -33,6 +46,7 @@ export type SupportCase = {
 export type CreateSupportCaseRequest = {
   attachmentIds?: string[];
   description: string;
+  priority?: SupportCasePriority;
   relatedRecord?: SupportCaseRelatedRecord;
   title: string;
   type: SupportCaseType;

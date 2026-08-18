@@ -73,13 +73,19 @@ export type DocumentsStackParamList = {
 
 export type CasesStackParamList = {
   CasesHome: undefined;
+  CaseType: undefined;
   CreateCase: undefined;
+  CaseEvidence: { caseId?: string };
   CaseDetails: { caseId: string };
+  CaseInformationResponse: { caseId: string };
 };
 
 export type AccountStackParamList = {
   AccountHome: undefined;
   AccountDetails: undefined;
+  AccountSecurity: undefined;
+  LogoutConfirmation: undefined;
+  LogoutResult: undefined;
 };
 
 export type MainTabParamList = {

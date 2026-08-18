@@ -1,5 +1,5 @@
-import type { ImporterAccount } from '@/types/account';
-import type { SupportCase } from '@/types/case';
+import type { AccountCapability, AccountSessionInfo, ImporterAccount } from '@/types/account';
+import type { SupportCase, SupportCaseUpdate } from '@/types/case';
 import type { ComplianceDocument, ComplianceDocumentRequirement } from '@/types/document';
 import type {
   CardRequestResult,
@@ -311,24 +311,88 @@ export const mockCases: SupportCase[] = [
     id: 'case_001',
     accountId: 'account_001',
     createdAt: '2026-08-17T00:00:00.000Z',
-    description: 'Sample placeholder case awaiting backend contract confirmation.',
+    description: 'Sample placeholder payment case awaiting Service Provider review.',
+    evidence: [
+      {
+        fileName: 'payment-receipt-placeholder.pdf',
+        id: 'evidence_001',
+        uploadedAt: '2026-08-17T00:02:00.000Z',
+      },
+    ],
+    informationRequest: 'Please provide the supplier invoice reference placeholder.',
+    lastUpdatedAt: '2026-08-17T00:15:00.000Z',
+    priority: 'normal',
     reference: 'KDT-CS-001',
+    relatedRecord: {
+      id: 'txn_001',
+      label: 'Sample supplier payment',
+      type: 'transaction',
+    },
     status: 'open',
     title: 'Sample payment support case',
     type: 'payment_issue',
-    updates: [],
+    updates: [
+      {
+        id: 'case_update_001',
+        author: 'importer',
+        createdAt: '2026-08-17T00:00:00.000Z',
+        message: 'Case created with placeholder evidence.',
+        status: 'open',
+      },
+      {
+        id: 'case_update_002',
+        author: 'service_provider',
+        createdAt: '2026-08-17T00:15:00.000Z',
+        message: 'Additional invoice detail requested.',
+        status: 'additional_information_required',
+      },
+    ],
   },
 ];
 
+export const mockCaseUpdates: Record<string, SupportCaseUpdate[]> = {
+  case_001: mockCases[0].updates,
+};
+
+export const mockAccountCapabilities: AccountCapability[] = [
+  {
+    enabled: true,
+    key: 'wallet_view',
+    label: 'View central wallet',
+  },
+  {
+    enabled: true,
+    key: 'supplier_payments',
+    label: 'Initiate supplier payments',
+  },
+  {
+    enabled: false,
+    key: 'real_card_operations',
+    label: 'Submit live card operations',
+    reason: 'Pending backend contracts.',
+  },
+];
+
+export const mockAccountSessionInfo: AccountSessionInfo = {
+  deviceName: 'Expo placeholder session',
+  ipAddressPlaceholder: 'Hidden until session API is confirmed',
+  lastLoginAt: '2026-08-18T00:00:00.000Z',
+  sessionId: 'session_placeholder_001',
+};
+
 export const mockAccount: ImporterAccount = {
   id: 'account_001',
+  capabilities: mockAccountCapabilities,
   profile: {
     accountId: 'account_001',
     businessName: 'Sample Importer Ltd.',
+    contactAddress: 'Lagos, Nigeria',
     email: 'importer@example.com',
     fullName: 'Sample Importer',
+    phoneNumber: '+234 000 000 0000',
     role: 'importer',
   },
   provisioningStatus: 'ready',
+  sessionInfo: mockAccountSessionInfo,
   wallet: mockWallet,
 };

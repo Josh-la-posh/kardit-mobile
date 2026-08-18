@@ -28,6 +28,12 @@ export function PaymentResultScreen({ navigation }: Props) {
       >
         View transaction placeholder
       </Button>
+      <Button
+        variant="ghost"
+        onPress={() => navigation.getParent()?.navigate('Cases', { screen: 'CaseType' })}
+      >
+        Create support case placeholder
+      </Button>
       <Button onPress={() => navigation.navigate('PaymentsHome')}>Done</Button>
     </Screen>
   );
