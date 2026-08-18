@@ -71,6 +71,7 @@ Current guarded-routing behavior is intentionally minimal:
 - Phase 5 supplier/payment-flow foundation added: supplier beneficiary management, QR/bank-account payment entry, payment details, funding source, summary, authentication, and result placeholders are navigable with typed mock data.
 - Phase 6 document/transaction tracking foundation added: compliance document list/details/upload/link/status placeholders and richer transaction list/details/timeline/document sections are in place.
 - Phase 7 case/account foundation added: support case list/details/category/evidence/additional-info placeholders and account profile/security/logout placeholders are in place.
+- Phase 8A foundation hardening added: pure helper tests, deterministic placeholder validations, and safer demo logout clearing are in place.
 - Real API integration is pending confirmed Kardit Core backend contracts, endpoint paths, request/response shapes, payment authentication, document upload transport, and idempotency rules.
 - Real authentication and onboarding status APIs are pending backend contracts; current sign-in and registration remain demo placeholders.
 - Real wallet APIs, transfer validation, transfer limits, fees, exchange rates, submission, idempotency, and balance updates are pending backend contracts.
@@ -78,4 +79,5 @@ Current guarded-routing behavior is intentionally minimal:
 - Real QR scanning, payment authentication, supplier validation, bank-account payment APIs, document requirements, provider integrations, and payment submission are pending backend contracts.
 - Real document upload, file preview, transaction polling, compliance decisioning, payment retry, and document requirement rules are pending backend contracts.
 - Real support workflows, case evidence upload, account APIs, credential reset, logout revocation, and session management are pending backend contracts.
+- Helper tests cover current placeholder gate, routing, document, card, and transfer decisions; real backend contracts are still pending.
 - PRD UI implementation is pending design confirmation; current wallet, supplier, payment, case, account, and transaction detail screens are PRD-ready placeholders only.

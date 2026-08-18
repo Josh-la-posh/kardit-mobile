@@ -31,6 +31,10 @@ export function validateTransferPlaceholder(
     return { message: 'Amount is required before a transfer can be previewed.', valid: false };
   }
 
+  if (Number.isNaN(Number(formState.amount)) || Number(formState.amount) <= 0) {
+    return { message: 'Amount must be greater than zero.', valid: false };
+  }
+
   if (!formState.source || !formState.destination) {
     return { message: 'Source and destination are required.', valid: false };
   }
