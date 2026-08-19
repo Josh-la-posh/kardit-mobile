@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TextInput, type TextInputProps, View } from 'react-native';
 
-import { colors, spacing, typography } from '@/theme';
+import { colors, radii, spacing, typography } from '@/theme';
 
 type InputProps = TextInputProps & {
   label: string;
@@ -22,14 +22,14 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
   },
   label: {
-    color: colors.text,
+    color: colors.ink2,
     fontSize: typography.small,
-    fontWeight: '700',
+    fontWeight: '600',
   },
   input: {
     backgroundColor: colors.surface,
     borderColor: colors.border,
-    borderRadius: 8,
+    borderRadius: radii.md,
     borderWidth: 1,
     color: colors.text,
     fontSize: typography.body,

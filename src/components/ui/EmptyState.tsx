@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import { colors, spacing, typography } from '@/theme';
+import { colors, radii, spacing, typography } from '@/theme';
 
 export function EmptyState({ message, title }: { title: string; message: string }) {
   return (
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.surface,
     borderColor: colors.border,
-    borderRadius: 8,
+    borderRadius: radii.md,
     borderWidth: 1,
     gap: spacing.sm,
     padding: spacing.lg,
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   title: {
     color: colors.text,
     fontSize: typography.body,
-    fontWeight: '700',
+    fontWeight: '600',
   },
   message: {
     color: colors.textMuted,

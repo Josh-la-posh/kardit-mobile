@@ -1,10 +1,12 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Text } from 'react-native';
-
 import { Screen } from '@/components/layout/Screen';
+import { AppHeader } from '@/components/ui/AppHeader';
 import { Button } from '@/components/ui/Button';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { InfoCard } from '@/components/ui/InfoCard';
+import { ListItem } from '@/components/ui/ListItem';
+import { StatusPill } from '@/components/ui/StatusPill';
+import { Timeline } from '@/components/ui/Timeline';
 import type { TransactionsStackParamList } from '@/navigation/types';
 import {
   mockComplianceDocuments,
@@ -24,16 +26,24 @@ export function TransactionDetailsScreen({ navigation, route }: Props) {
 
   return (
     <Screen>
+      <AppHeader
+        title="Transaction details"
+        subtitle="Demo transaction metadata, linked documents, timeline, and support actions."
+      />
       <InfoCard title={transaction.title}>
-        <Text>Reference: {transaction.reference}</Text>
-        <Text>Status: {transaction.status}</Text>
-        <Text>Amount: {transaction.amount.formatted}</Text>
-        <Text>Type: {transaction.type}</Text>
-        <Text>Route: {transaction.paymentRoute ?? 'Not applicable'}</Text>
-        <Text>
-          Funding source: {transaction.fundingSourceLabel ?? transaction.fundingSourceType}
-        </Text>
-        <Text>Related record: {transaction.relatedRecordLabel ?? 'Not linked'}</Text>
+        <StatusPill
+          label={transaction.status}
+          tone={transaction.status === 'failed' ? 'danger' : 'warning'}
+        />
+        <ListItem title="Reference" detail={transaction.reference} />
+        <ListItem title="Amount" detail={transaction.amount.formatted} />
+        <ListItem title="Type" detail={transaction.type} />
+        <ListItem title="Route" detail={transaction.paymentRoute ?? 'Not applicable'} />
+        <ListItem
+          title="Funding source"
+          detail={transaction.fundingSourceLabel ?? transaction.fundingSourceType}
+        />
+        <ListItem title="Related record" detail={transaction.relatedRecordLabel ?? 'Not linked'} />
       </InfoCard>
       <InfoCard title="Linked documents">
         {documents.length === 0 ? (
@@ -43,25 +53,30 @@ export function TransactionDetailsScreen({ navigation, route }: Props) {
           />
         ) : (
           documents.map((document) => (
-            <Text key={document.id}>
-              {document.fileName}: {document.status}
-            </Text>
+            <ListItem
+              key={document.id}
+              title={document.fileName}
+              meta={document.type}
+              detail={document.status}
+            />
           ))
         )}
       </InfoCard>
       <InfoCard title="Status timeline">
-        {timeline.map((item) => (
-          <Text key={item.id}>
-            {item.label}: {item.status}
-          </Text>
-        ))}
+        <Timeline
+          items={timeline.map((item) => ({
+            id: item.id,
+            label: item.label,
+            meta: `${item.status} | ${item.occurredAt}`,
+          }))}
+        />
       </InfoCard>
-      <Button variant="secondary">Retry placeholder</Button>
+      <Button variant="secondary">Retry demo action</Button>
       <Button
         variant="ghost"
         onPress={() => navigation.getParent()?.navigate('Cases', { screen: 'CaseType' })}
       >
-        Create support case placeholder
+        Create support case
       </Button>
     </Screen>
   );

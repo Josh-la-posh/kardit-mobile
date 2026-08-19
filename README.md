@@ -49,7 +49,7 @@ npm.cmd --prefix apps\importer-mobile run format
 - `src/services/api`: Central API client and typed placeholder modules.
 - `src/services/storage`: Auth token storage abstraction.
 - `src/components`: Shared UI, form, and layout primitives.
-- `src/theme`: Color, spacing, and typography tokens.
+- `src/theme`: Kardit demo color, spacing, radius, shadow, and typography tokens.
 
 ## Current Scope
 
@@ -72,6 +72,7 @@ Current guarded-routing behavior is intentionally minimal:
 - Phase 6 document/transaction tracking foundation added: compliance document list/details/upload/link/status placeholders and richer transaction list/details/timeline/document sections are in place.
 - Phase 7 case/account foundation added: support case list/details/category/evidence/additional-info placeholders and account profile/security/logout placeholders are in place.
 - Phase 8A foundation hardening added: pure helper tests, deterministic placeholder validations, and safer demo logout clearing are in place.
+- Demo screen build added: Kardit design tokens, polished shared UI components, and demo-data screens for auth, onboarding, dashboard, wallet/transfers, cards, suppliers, payments, documents, transactions, cases, and account areas are in progress for backend/product walkthroughs.
 - Real API integration is pending confirmed Kardit Core backend contracts, endpoint paths, request/response shapes, payment authentication, document upload transport, and idempotency rules.
 - Real authentication and onboarding status APIs are pending backend contracts; current sign-in and registration remain demo placeholders.
 - Real wallet APIs, transfer validation, transfer limits, fees, exchange rates, submission, idempotency, and balance updates are pending backend contracts.

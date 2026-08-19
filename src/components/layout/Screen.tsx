@@ -25,7 +25,8 @@ const styles = StyleSheet.create({
   },
   content: {
     flexGrow: 1,
-    gap: spacing.lg,
+    gap: spacing.xl,
     padding: spacing.lg,
+    paddingBottom: spacing.xxl,
   },
 });

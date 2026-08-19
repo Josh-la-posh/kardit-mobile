@@ -1,9 +1,9 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Text } from 'react-native';
-
 import { Screen } from '@/components/layout/Screen';
+import { AppHeader } from '@/components/ui/AppHeader';
 import { Button } from '@/components/ui/Button';
 import { InfoCard } from '@/components/ui/InfoCard';
+import { ListItem } from '@/components/ui/ListItem';
 import { providerChoiceHiddenNote } from '@/features/payments/paymentRouting';
 import type { PaymentsStackParamList } from '@/navigation/types';
 import { mockPaymentRoutes } from '@/utils/mockData';
@@ -13,18 +13,16 @@ type Props = NativeStackScreenProps<PaymentsStackParamList, 'PaymentsHome'>;
 export function PaymentsScreen({ navigation }: Props) {
   return (
     <Screen>
-      <InfoCard title="Supplier payments">
-        <Text>
-          PRD-ready placeholder for payment initiation. Kardit Core will determine the underlying
-          rail; providers are not exposed as user choices.
-        </Text>
-        <Text>{providerChoiceHiddenNote}</Text>
+      <AppHeader
+        title="Supplier payments"
+        subtitle="Choose a demo entry point. Backend/Core will select the real route and provider behind the scenes."
+      />
+      <InfoCard title="Route ownership">
+        <ListItem title="Provider choice" meta={providerChoiceHiddenNote} detail="Hidden" />
       </InfoCard>
       <InfoCard title="Payment routes">
         {mockPaymentRoutes.map((route) => (
-          <Text key={route.route}>
-            {route.label}: {route.description}
-          </Text>
+          <ListItem key={route.route} title={route.label} meta={route.description} detail="Demo" />
         ))}
       </InfoCard>
       <Button onPress={() => navigation.navigate('QrPayment')}>QR payment</Button>

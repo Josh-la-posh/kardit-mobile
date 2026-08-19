@@ -1,10 +1,10 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Text } from 'react-native';
-
 import { Screen } from '@/components/layout/Screen';
+import { AppHeader } from '@/components/ui/AppHeader';
 import { Button } from '@/components/ui/Button';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { InfoCard } from '@/components/ui/InfoCard';
+import { ListItem } from '@/components/ui/ListItem';
 import { documentDecisioningNote } from '@/features/documents/documentRules';
 import type { DocumentsStackParamList } from '@/navigation/types';
 import { mockComplianceDocuments } from '@/utils/mockData';
@@ -14,8 +14,16 @@ type Props = NativeStackScreenProps<DocumentsStackParamList, 'DocumentsHome'>;
 export function DocumentsScreen({ navigation }: Props) {
   return (
     <Screen>
-      <InfoCard title="Compliance documents">
-        <Text>{documentDecisioningNote}</Text>
+      <AppHeader
+        title="Compliance documents"
+        subtitle="Track demo document requirements, uploads, links, and validation status."
+      />
+      <InfoCard title="Rule ownership">
+        <ListItem
+          title="Backend/Core decides requirements"
+          meta={documentDecisioningNote}
+          detail="Pending"
+        />
       </InfoCard>
       <Button onPress={() => navigation.navigate('UploadDocument', {})}>
         Upload document placeholder
@@ -27,17 +35,13 @@ export function DocumentsScreen({ navigation }: Props) {
         />
       ) : (
         mockComplianceDocuments.map((document) => (
-          <InfoCard key={document.id} title={document.fileName}>
-            <Text>Type: {document.type}</Text>
-            <Text>Status: {document.status}</Text>
-            <Text>Required: {document.required ? 'Yes' : 'No'}</Text>
-            <Button
-              variant="secondary"
-              onPress={() => navigation.navigate('DocumentDetails', { documentId: document.id })}
-            >
-              View document
-            </Button>
-          </InfoCard>
+          <ListItem
+            key={document.id}
+            title={document.fileName}
+            meta={`${document.type} | ${document.required ? 'Required' : 'Optional'}`}
+            detail={document.status}
+            onPress={() => navigation.navigate('DocumentDetails', { documentId: document.id })}
+          />
         ))
       )}
     </Screen>

@@ -1,9 +1,10 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Text } from 'react-native';
-
 import { Screen } from '@/components/layout/Screen';
+import { AppHeader } from '@/components/ui/AppHeader';
 import { Button } from '@/components/ui/Button';
 import { InfoCard } from '@/components/ui/InfoCard';
+import { ListItem } from '@/components/ui/ListItem';
+import { StatusPill } from '@/components/ui/StatusPill';
 import type { AccountStackParamList } from '@/navigation/types';
 import { mockAccount, mockAccountCapabilities, mockAccountSessionInfo } from '@/utils/mockData';
 
@@ -12,30 +13,33 @@ type Props = NativeStackScreenProps<AccountStackParamList, 'AccountDetails'>;
 export function AccountDetailsScreen({ navigation }: Props) {
   return (
     <Screen>
-      <InfoCard title="Account details">
-        <Text>
-          PRD-ready placeholder for authenticated importer account information, stakeholder role,
-          provisioning status, and wallet readiness.
-        </Text>
-      </InfoCard>
+      <AppHeader
+        title="Account profile"
+        subtitle="Demo importer profile, capabilities, session information, and logout state."
+      />
       <InfoCard title={mockAccount.profile.businessName}>
-        <Text>Stakeholder type: {mockAccount.profile.role}</Text>
-        <Text>Contact: {mockAccount.profile.email}</Text>
-        <Text>Phone: {mockAccount.profile.phoneNumber}</Text>
-        <Text>Address: {mockAccount.profile.contactAddress}</Text>
-        <Text>Account status: {mockAccount.provisioningStatus}</Text>
-        <Text>Wallet status: {mockAccount.wallet?.status ?? 'Pending assignment'}</Text>
+        <StatusPill label={mockAccount.provisioningStatus} tone="success" />
+        <ListItem title="Stakeholder type" detail={mockAccount.profile.role} />
+        <ListItem
+          title="Contact"
+          meta={mockAccount.profile.email}
+          detail={mockAccount.profile.phoneNumber}
+        />
+        <ListItem title="Wallet" detail={mockAccount.wallet?.status ?? 'Pending assignment'} />
       </InfoCard>
       <InfoCard title="Capabilities placeholder">
         {mockAccountCapabilities.map((capability) => (
-          <Text key={capability.key}>
-            {capability.label}: {capability.enabled ? 'Enabled' : 'Disabled'}
-          </Text>
+          <ListItem
+            key={capability.key}
+            title={capability.label}
+            meta={capability.reason}
+            detail={capability.enabled ? 'Enabled' : 'Disabled'}
+          />
         ))}
       </InfoCard>
       <InfoCard title="Session placeholder">
-        <Text>Last login: {mockAccountSessionInfo.lastLoginAt}</Text>
-        <Text>Device: {mockAccountSessionInfo.deviceName}</Text>
+        <ListItem title="Last login" detail={mockAccountSessionInfo.lastLoginAt} />
+        <ListItem title="Device" detail={mockAccountSessionInfo.deviceName} />
       </InfoCard>
       <Button onPress={() => navigation.navigate('AccountSecurity')}>Security and access</Button>
       <Button variant="secondary" onPress={() => navigation.navigate('LogoutConfirmation')}>

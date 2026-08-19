@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { colors, spacing, typography } from '@/theme';
+import { colors, radii, spacing, typography } from '@/theme';
 
 type SelectProps = {
   label: string;
@@ -28,13 +28,13 @@ const styles = StyleSheet.create({
   label: {
     color: colors.text,
     fontSize: typography.small,
-    fontWeight: '700',
+    fontWeight: '600',
   },
   control: {
     alignItems: 'center',
     backgroundColor: colors.surface,
     borderColor: colors.border,
-    borderRadius: 8,
+    borderRadius: radii.md,
     borderWidth: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -50,5 +50,6 @@ const styles = StyleSheet.create({
   },
   chevron: {
     color: colors.textMuted,
+    fontSize: typography.body,
   },
 });

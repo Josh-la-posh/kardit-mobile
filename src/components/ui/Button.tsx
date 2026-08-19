@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from 'react';
 import { Pressable, StyleSheet, Text } from 'react-native';
 
-import { colors, spacing, typography } from '@/theme';
+import { colors, radii, spacing, typography } from '@/theme';
 
 type ButtonProps = PropsWithChildren<{
   onPress?: () => void;
@@ -30,7 +30,7 @@ export function Button({ children, disabled, onPress, variant = 'primary' }: But
 const styles = StyleSheet.create({
   base: {
     alignItems: 'center',
-    borderRadius: 8,
+    borderRadius: radii.md,
     minHeight: 48,
     justifyContent: 'center',
     paddingHorizontal: spacing.lg,
@@ -43,11 +43,13 @@ const styles = StyleSheet.create({
   },
   ghost: {
     backgroundColor: 'transparent',
+    borderColor: colors.line,
+    borderWidth: 1,
   },
   label: {
     color: colors.surface,
     fontSize: typography.body,
-    fontWeight: '700',
+    fontWeight: '600',
   },
   secondaryLabel: {
     color: colors.primary,

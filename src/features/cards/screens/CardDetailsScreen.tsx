@@ -2,9 +2,13 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { Text } from 'react-native';
 
 import { Screen } from '@/components/layout/Screen';
+import { AppHeader } from '@/components/ui/AppHeader';
 import { Button } from '@/components/ui/Button';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { InfoCard } from '@/components/ui/InfoCard';
+import { ListItem } from '@/components/ui/ListItem';
+import { MoneyText } from '@/components/ui/MoneyText';
+import { StatusPill } from '@/components/ui/StatusPill';
 import {
   canShowSensitiveCardDataPlaceholder,
   getCardCapabilitiesPlaceholder,
@@ -22,12 +26,16 @@ export function CardDetailsScreen({ navigation, route }: Props) {
 
   return (
     <Screen>
+      <AppHeader
+        title="Card details"
+        subtitle="Non-sensitive demo metadata, CMS-sensitive-data placeholder, transactions, and permitted action preview."
+      />
       <InfoCard title={card.label}>
-        <Text>Masked number: {card.maskedNumber}</Text>
-        <Text>Type: {card.type}</Text>
-        <Text>Status: {card.status}</Text>
-        <Text>Issuing bank: {card.bankName}</Text>
-        <Text>Balance: {card.balance}</Text>
+        <MoneyText size="medium">{card.balance}</MoneyText>
+        <StatusPill label={card.status} tone={card.status === 'active' ? 'success' : 'warning'} />
+        <ListItem title="Masked number" detail={card.maskedNumber ?? 'Masked'} />
+        <ListItem title="Type" detail={card.type} />
+        <ListItem title="Issuing bank" detail={card.bankName} />
       </InfoCard>
 
       <InfoCard title="Available card data">
@@ -38,9 +46,9 @@ export function CardDetailsScreen({ navigation, route }: Props) {
         {canShowSensitiveCardDataPlaceholder(card) ? (
           <>
             <Text>TODO: Fetch virtual card sensitive data from CMS only when authorized.</Text>
-            <Text>PAN: {mockVirtualCardSensitiveDetails.panPlaceholder}</Text>
-            <Text>Expiry: {mockVirtualCardSensitiveDetails.expiryPlaceholder}</Text>
-            <Text>CVV: {mockVirtualCardSensitiveDetails.cvvPlaceholder}</Text>
+            <ListItem title="PAN" detail={mockVirtualCardSensitiveDetails.panPlaceholder} />
+            <ListItem title="Expiry" detail={mockVirtualCardSensitiveDetails.expiryPlaceholder} />
+            <ListItem title="CVV" detail={mockVirtualCardSensitiveDetails.cvvPlaceholder} />
           </>
         ) : (
           <Text>{physicalCardSensitiveDataUnavailableNote}</Text>
@@ -55,19 +63,23 @@ export function CardDetailsScreen({ navigation, route }: Props) {
           />
         ) : (
           transactions.map((transaction) => (
-            <Text key={transaction.id}>
-              {transaction.description}: {transaction.amount} ({transaction.status})
-            </Text>
+            <ListItem
+              key={transaction.id}
+              title={transaction.description}
+              meta={transaction.createdAt}
+              detail={`${transaction.amount} (${transaction.status})`}
+            />
           ))
         )}
       </InfoCard>
 
       <InfoCard title="Card actions">
         {capabilities.map((capability) => (
-          <Text key={capability.operation}>
-            {capability.operation}:{' '}
-            {capability.permitted ? 'placeholder available' : 'not permitted'}
-          </Text>
+          <ListItem
+            key={capability.operation}
+            title={capability.operation}
+            detail={capability.permitted ? 'Demo available' : 'Not permitted'}
+          />
         ))}
       </InfoCard>
       <Button onPress={() => navigation.navigate('FundCard', { cardId: route.params.cardId })}>
