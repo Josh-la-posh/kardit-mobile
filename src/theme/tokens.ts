@@ -31,6 +31,32 @@ export const colors = {
   success: '#1B7A45',
 };
 
+export const colorSchemes = {
+  light: colors,
+  dark: {
+    ...colors,
+    background: '#08110C',
+    paper: '#08110C',
+    surface: '#111A14',
+    card: '#111A14',
+    surfaceMuted: '#18241D',
+    line: '#243328',
+    lineSoft: '#18241D',
+    border: '#243328',
+    text: '#F4F7F2',
+    ink: '#F4F7F2',
+    ink2: '#DCE5DD',
+    textMuted: '#AEB9B0',
+    muted: '#AEB9B0',
+    muted2: '#8F9B92',
+    primaryMuted: '#153A25',
+    forestTint: '#153A25',
+    scarletTint: '#3B171A',
+    amberTint: '#332513',
+    slateTint: '#1D2930',
+  },
+};
+
 export const spacing = {
   xs: 4,
   sm: 8,

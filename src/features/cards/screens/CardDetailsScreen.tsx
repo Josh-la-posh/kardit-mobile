@@ -4,6 +4,7 @@ import { Text } from 'react-native';
 import { Screen } from '@/components/layout/Screen';
 import { AppHeader } from '@/components/ui/AppHeader';
 import { Button } from '@/components/ui/Button';
+import { CardPreview } from '@/components/ui/CardPreview';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { InfoCard } from '@/components/ui/InfoCard';
 import { ListItem } from '@/components/ui/ListItem';
@@ -28,8 +29,9 @@ export function CardDetailsScreen({ navigation, route }: Props) {
     <Screen>
       <AppHeader
         title="Card details"
-        subtitle="Non-sensitive demo metadata, CMS-sensitive-data placeholder, transactions, and permitted action preview."
+        subtitle="Card metadata, balance, activity, and safe demo actions."
       />
+      <CardPreview card={card} />
       <InfoCard title={card.label}>
         <MoneyText size="medium">{card.balance}</MoneyText>
         <StatusPill label={card.status} tone={card.status === 'active' ? 'success' : 'warning'} />

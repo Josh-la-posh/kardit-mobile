@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { InfoCard } from '@/components/ui/InfoCard';
 import { ListItem } from '@/components/ui/ListItem';
 import { Select } from '@/components/ui/Select';
+import { StepIndicator } from '@/components/ui/StepIndicator';
 import type { OnboardingStackParamList } from '@/navigation/types';
 
 type Props = NativeStackScreenProps<OnboardingStackParamList, 'ImporterType'>;
@@ -14,13 +15,14 @@ export function ImporterTypeScreen({ navigation }: Props) {
     <Screen>
       <AppHeader
         eyebrow="Onboarding demo"
-        title="Importer setup"
-        subtitle="Capture demo profile inputs, document placeholders, and declaration flow before backend onboarding APIs are confirmed."
+        title="Business type"
+        subtitle="Choose how your importer business is registered."
       />
+      <StepIndicator current={1} total={6} />
       <InfoCard title="Applicant type">
         <ListItem
           title="Rule pending"
-          meta="Backend/product must confirm whether importer type changes required documents."
+          meta="Requirements may vary for LLC or registered business."
           detail="Demo"
         />
       </InfoCard>

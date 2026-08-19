@@ -1,15 +1,14 @@
-import { NavigationContainer } from '@react-navigation/native';
+import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useEffect } from 'react';
 
 import { LoadingState } from '@/components/ui/LoadingState';
-import { WelcomeScreen } from '@/features/auth/screens/WelcomeScreen';
 import { AccountProvisioningPendingScreen } from '@/features/onboarding/screens/AccountProvisioningPendingScreen';
 import { AdditionalInformationRequiredScreen } from '@/features/onboarding/screens/AdditionalInformationRequiredScreen';
 import { ApplicationStatusScreen } from '@/features/onboarding/screens/ApplicationStatusScreen';
 import { WalletAssignmentPendingScreen } from '@/features/onboarding/screens/WalletAssignmentPendingScreen';
 import { useAuthStore } from '@/store/authStore';
-import { colors } from '@/theme';
+import { useTheme } from '@/theme';
 
 import { getAppGate } from './appGate';
 import { AuthNavigator } from './AuthNavigator';
@@ -24,6 +23,7 @@ export function RootNavigator() {
   const accountReadiness = useAuthStore((state) => state.accountReadiness);
   const isHydrating = useAuthStore((state) => state.isHydrating);
   const session = useAuthStore((state) => state.session);
+  const { colors, isDark } = useTheme();
 
   useEffect(() => {
     void hydrateAuth();
@@ -36,7 +36,19 @@ export function RootNavigator() {
   }
 
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      theme={{
+        ...(isDark ? DarkTheme : DefaultTheme),
+        colors: {
+          ...(isDark ? DarkTheme.colors : DefaultTheme.colors),
+          background: colors.background,
+          border: colors.line,
+          card: colors.card,
+          primary: colors.primary,
+          text: colors.text,
+        },
+      }}
+    >
       <Stack.Navigator
         screenOptions={{
           contentStyle: { backgroundColor: colors.background },
@@ -44,14 +56,7 @@ export function RootNavigator() {
         }}
       >
         {appGate === 'unauthenticated' ? (
-          <>
-            <Stack.Screen
-              name="Welcome"
-              component={WelcomeScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
-          </>
+          <Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
         ) : appGate === 'onboarding_required' ? (
           <Stack.Screen
             name="Onboarding"

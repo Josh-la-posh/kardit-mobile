@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import { colors, spacing, typography } from '@/theme';
+import { spacing, typography, useTheme } from '@/theme';
 
 type AppHeaderProps = {
   eyebrow?: string;
@@ -9,11 +9,13 @@ type AppHeaderProps = {
 };
 
 export function AppHeader({ eyebrow = 'Demo workspace', subtitle, title }: AppHeaderProps) {
+  const { colors } = useTheme();
+
   return (
     <View style={styles.wrapper}>
-      <Text style={styles.eyebrow}>{eyebrow}</Text>
-      <Text style={styles.title}>{title}</Text>
-      {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
+      <Text style={[styles.eyebrow, { color: colors.forestDeep }]}>{eyebrow}</Text>
+      <Text style={[styles.title, { color: colors.ink }]}>{title}</Text>
+      {subtitle ? <Text style={[styles.subtitle, { color: colors.muted }]}>{subtitle}</Text> : null}
     </View>
   );
 }
@@ -23,20 +25,17 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   eyebrow: {
-    color: colors.forestDeep,
     fontSize: typography.eyebrow,
     fontWeight: '700',
     letterSpacing: 1.2,
     textTransform: 'uppercase',
   },
   title: {
-    color: colors.ink,
     fontSize: typography.hLg,
     fontWeight: '600',
     lineHeight: 35,
   },
   subtitle: {
-    color: colors.muted,
     fontSize: typography.muted,
     lineHeight: 20,
   },

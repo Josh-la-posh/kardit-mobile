@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import type { ComponentProps } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { colors, radii, spacing, typography } from '@/theme';
+import { radii, spacing, typography, useTheme } from '@/theme';
 
 type IconName = ComponentProps<typeof Ionicons>['name'];
 
@@ -15,12 +15,18 @@ export function ActionTile({
   label: string;
   onPress?: () => void;
 }) {
+  const { colors } = useTheme();
+
   return (
-    <Pressable accessibilityRole="button" onPress={onPress} style={styles.tile}>
-      <View style={styles.icon}>
+    <Pressable
+      accessibilityRole="button"
+      onPress={onPress}
+      style={[styles.tile, { backgroundColor: colors.card, borderColor: colors.line }]}
+    >
+      <View style={[styles.icon, { backgroundColor: colors.forestTint }]}>
         <Ionicons color={colors.forestDeep} name={icon} size={18} />
       </View>
-      <Text style={styles.label}>{label}</Text>
+      <Text style={[styles.label, { color: colors.ink }]}>{label}</Text>
     </Pressable>
   );
 }
@@ -28,14 +34,12 @@ export function ActionTile({
 const styles = StyleSheet.create({
   icon: {
     alignItems: 'center',
-    backgroundColor: colors.forestTint,
     borderRadius: radii.xl,
     height: 34,
     justifyContent: 'center',
     width: 34,
   },
   label: {
-    color: colors.ink,
     flex: 1,
     fontSize: typography.small,
     fontWeight: '600',
@@ -43,8 +47,6 @@ const styles = StyleSheet.create({
   },
   tile: {
     alignItems: 'center',
-    backgroundColor: colors.card,
-    borderColor: colors.line,
     borderRadius: radii.md,
     borderWidth: 1,
     flexBasis: '48%',

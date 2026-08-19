@@ -1,17 +1,17 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import { colors, radii, spacing, typography } from '@/theme';
+import { radii, spacing, typography, useTheme } from '@/theme';
 
 type Tone = 'success' | 'warning' | 'danger' | 'neutral';
 
-const toneStyles = {
-  danger: { backgroundColor: colors.scarletTint, color: colors.scarlet },
-  neutral: { backgroundColor: colors.slateTint, color: colors.slate },
-  success: { backgroundColor: colors.forestTint, color: colors.forestDeep },
-  warning: { backgroundColor: colors.amberTint, color: colors.amber },
-};
-
 export function StatusPill({ label, tone = 'neutral' }: { label: string; tone?: Tone }) {
+  const { colors } = useTheme();
+  const toneStyles = {
+    danger: { backgroundColor: colors.scarletTint, color: colors.scarlet },
+    neutral: { backgroundColor: colors.slateTint, color: colors.slate },
+    success: { backgroundColor: colors.forestTint, color: colors.forestDeep },
+    warning: { backgroundColor: colors.amberTint, color: colors.amber },
+  };
   const style = toneStyles[tone];
 
   return (

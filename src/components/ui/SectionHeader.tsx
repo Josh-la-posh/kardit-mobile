@@ -1,12 +1,26 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import { colors, spacing, typography } from '@/theme';
+import { spacing, typography, useTheme } from '@/theme';
 
-export function SectionHeader({ action, title }: { action?: string; title: string }) {
+export function SectionHeader({
+  action,
+  onActionPress,
+  title,
+}: {
+  action?: string;
+  onActionPress?: () => void;
+  title: string;
+}) {
+  const { colors } = useTheme();
+
   return (
     <View style={styles.row}>
-      <Text style={styles.title}>{title}</Text>
-      {action ? <Text style={styles.action}>{action}</Text> : null}
+      <Text style={[styles.title, { color: colors.ink }]}>{title}</Text>
+      {action ? (
+        <Text onPress={onActionPress} style={[styles.action, { color: colors.forest }]}>
+          {action}
+        </Text>
+      ) : null}
     </View>
   );
 }
@@ -19,12 +33,10 @@ const styles = StyleSheet.create({
     gap: spacing.md,
   },
   title: {
-    color: colors.ink,
     fontSize: typography.hSm,
     fontWeight: '600',
   },
   action: {
-    color: colors.forest,
     fontSize: typography.small,
     fontWeight: '600',
   },

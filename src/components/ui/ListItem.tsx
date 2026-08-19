@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { colors, radii, spacing, typography } from '@/theme';
+import { radii, spacing, typography, useTheme } from '@/theme';
 
 export function ListItem({
   detail,
@@ -13,31 +13,31 @@ export function ListItem({
   onPress?: () => void;
   title: string;
 }) {
+  const { colors } = useTheme();
+
   return (
     <Pressable
       accessibilityRole={onPress ? 'button' : undefined}
       onPress={onPress}
-      style={styles.item}
+      style={[styles.item, { backgroundColor: colors.lineSoft }]}
     >
       <View style={styles.text}>
-        <Text style={styles.title}>{title}</Text>
-        {meta ? <Text style={styles.meta}>{meta}</Text> : null}
+        <Text style={[styles.title, { color: colors.ink }]}>{title}</Text>
+        {meta ? <Text style={[styles.meta, { color: colors.muted }]}>{meta}</Text> : null}
       </View>
-      {detail ? <Text style={styles.detail}>{detail}</Text> : null}
+      {detail ? <Text style={[styles.detail, { color: colors.ink2 }]}>{detail}</Text> : null}
     </Pressable>
   );
 }
 
 const styles = StyleSheet.create({
   detail: {
-    color: colors.ink2,
     fontSize: typography.small,
     fontWeight: '600',
     textAlign: 'right',
   },
   item: {
     alignItems: 'center',
-    backgroundColor: colors.lineSoft,
     borderRadius: radii.md,
     flexDirection: 'row',
     gap: spacing.md,
@@ -45,7 +45,6 @@ const styles = StyleSheet.create({
     padding: spacing.md,
   },
   meta: {
-    color: colors.muted,
     fontSize: typography.small,
     lineHeight: 19,
   },
@@ -54,7 +53,6 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
   },
   title: {
-    color: colors.ink,
     fontSize: typography.body,
     fontWeight: '600',
   },

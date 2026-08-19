@@ -10,7 +10,7 @@ import { PaymentsNavigator } from '@/navigation/PaymentsNavigator';
 import { ProfileScreen } from '@/features/profile/screens/ProfileScreen';
 import { SupportScreen } from '@/features/profile/screens/SupportScreen';
 import { SuppliersNavigator } from '@/navigation/SuppliersNavigator';
-import { colors } from '@/theme';
+import { radii, useTheme } from '@/theme';
 import { TransactionsNavigator } from '@/navigation/TransactionsNavigator';
 import { WalletNavigator } from '@/navigation/WalletNavigator';
 
@@ -36,28 +36,55 @@ const iconForRoute = (routeName: keyof MainTabParamList) => {
 };
 
 export function MainTabs() {
+  const { colors } = useTheme();
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
+        tabBarStyle: {
+          backgroundColor: colors.card,
+          borderColor: colors.line,
+          borderTopLeftRadius: radii.lg,
+          borderTopRightRadius: radii.lg,
+          minHeight: 66,
+          paddingBottom: 8,
+          paddingTop: 8,
+        },
         tabBarIcon: ({ color, size }) => (
           <Ionicons name={iconForRoute(route.name)} color={color} size={size} />
         ),
       })}
     >
       <Tab.Screen name="Dashboard" component={DashboardScreen} />
-      <Tab.Screen name="Wallet" component={WalletNavigator} />
       <Tab.Screen name="Cards" component={CardsNavigator} />
-      <Tab.Screen name="Suppliers" component={SuppliersNavigator} />
-      <Tab.Screen name="Payments" component={PaymentsNavigator} />
-      <Tab.Screen name="Transactions" component={TransactionsNavigator} />
-      <Tab.Screen name="Documents" component={DocumentsNavigator} />
-      <Tab.Screen name="Cases" component={CasesNavigator} />
-      <Tab.Screen name="Account" component={AccountNavigator} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
-      <Tab.Screen name="Support" component={SupportScreen} />
+      <Tab.Screen name="Payments" component={PaymentsNavigator} options={{ title: 'Pay' }} />
+      <Tab.Screen
+        name="Transactions"
+        component={TransactionsNavigator}
+        options={{ title: 'Activity' }}
+      />
+      <Tab.Screen name="Wallet" component={WalletNavigator} />
+      <Tab.Screen
+        name="Suppliers"
+        component={SuppliersNavigator}
+        options={{ tabBarButton: () => null }}
+      />
+      <Tab.Screen
+        name="Documents"
+        component={DocumentsNavigator}
+        options={{ tabBarButton: () => null }}
+      />
+      <Tab.Screen name="Cases" component={CasesNavigator} options={{ tabBarButton: () => null }} />
+      <Tab.Screen
+        name="Account"
+        component={AccountNavigator}
+        options={{ tabBarButton: () => null }}
+      />
+      <Tab.Screen name="Profile" component={ProfileScreen} options={{ tabBarButton: () => null }} />
+      <Tab.Screen name="Support" component={SupportScreen} options={{ tabBarButton: () => null }} />
     </Tab.Navigator>
   );
 }

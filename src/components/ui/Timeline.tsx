@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-import { colors, spacing, typography } from '@/theme';
+import { spacing, typography, useTheme } from '@/theme';
 
 type TimelineItem = {
   id: string;
@@ -9,14 +9,18 @@ type TimelineItem = {
 };
 
 export function Timeline({ items }: { items: TimelineItem[] }) {
+  const { colors } = useTheme();
+
   return (
     <View style={styles.wrapper}>
       {items.map((item) => (
         <View key={item.id} style={styles.row}>
-          <View style={styles.dot} />
+          <View style={[styles.dot, { backgroundColor: colors.forest }]} />
           <View style={styles.copy}>
-            <Text style={styles.label}>{item.label}</Text>
-            {item.meta ? <Text style={styles.meta}>{item.meta}</Text> : null}
+            <Text style={[styles.label, { color: colors.ink }]}>{item.label}</Text>
+            {item.meta ? (
+              <Text style={[styles.meta, { color: colors.muted }]}>{item.meta}</Text>
+            ) : null}
           </View>
         </View>
       ))}
@@ -30,19 +34,16 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
   },
   dot: {
-    backgroundColor: colors.forest,
     borderRadius: 5,
     height: 10,
     marginTop: 4,
     width: 10,
   },
   label: {
-    color: colors.ink,
     fontSize: typography.body,
     fontWeight: '600',
   },
   meta: {
-    color: colors.muted,
     fontSize: typography.small,
   },
   row: {

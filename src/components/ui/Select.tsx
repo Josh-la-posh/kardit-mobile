@@ -1,6 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { colors, radii, spacing, typography } from '@/theme';
+import { radii, spacing, typography, useTheme } from '@/theme';
 
 type SelectProps = {
   label: string;
@@ -10,12 +10,20 @@ type SelectProps = {
 };
 
 export function Select({ label, onPress, placeholder, value }: SelectProps) {
+  const { colors } = useTheme();
+
   return (
     <View style={styles.wrapper}>
-      <Text style={styles.label}>{label}</Text>
-      <Pressable accessibilityRole="button" onPress={onPress} style={styles.control}>
-        <Text style={[styles.value, !value && styles.placeholder]}>{value || placeholder}</Text>
-        <Text style={styles.chevron}>v</Text>
+      <Text style={[styles.label, { color: colors.text }]}>{label}</Text>
+      <Pressable
+        accessibilityRole="button"
+        onPress={onPress}
+        style={[styles.control, { backgroundColor: colors.surface, borderColor: colors.border }]}
+      >
+        <Text style={[styles.value, { color: value ? colors.text : colors.textMuted }]}>
+          {value || placeholder}
+        </Text>
+        <Text style={[styles.chevron, { color: colors.textMuted }]}>v</Text>
       </Pressable>
     </View>
   );
@@ -26,14 +34,11 @@ const styles = StyleSheet.create({
     gap: spacing.xs,
   },
   label: {
-    color: colors.text,
     fontSize: typography.small,
     fontWeight: '600',
   },
   control: {
     alignItems: 'center',
-    backgroundColor: colors.surface,
-    borderColor: colors.border,
     borderRadius: radii.md,
     borderWidth: 1,
     flexDirection: 'row',
@@ -42,14 +47,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
   },
   value: {
-    color: colors.text,
     fontSize: typography.body,
   },
-  placeholder: {
-    color: colors.textMuted,
-  },
   chevron: {
-    color: colors.textMuted,
     fontSize: typography.body,
   },
 });
