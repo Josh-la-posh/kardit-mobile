@@ -6,6 +6,11 @@ import { InfoCard } from '@/components/ui/InfoCard';
 import { ListItem } from '@/components/ui/ListItem';
 import { Select } from '@/components/ui/Select';
 import { StepIndicator } from '@/components/ui/StepIndicator';
+import {
+  defaultImporterOnboardingDraft,
+  persistImporterStakeholderType,
+  saveImporterOnboardingDraft,
+} from '@/features/onboarding/importerOnboardingStorage';
 import type { OnboardingStackParamList } from '@/navigation/types';
 
 type Props = NativeStackScreenProps<OnboardingStackParamList, 'ImporterType'>;
@@ -18,7 +23,7 @@ export function ImporterTypeScreen({ navigation }: Props) {
         title="Business type"
         subtitle="Choose how your importer business is registered."
       />
-      <StepIndicator current={1} total={6} />
+      <StepIndicator current={1} total={5} />
       <InfoCard title="Applicant type">
         <ListItem
           title="Rule pending"
@@ -27,7 +32,15 @@ export function ImporterTypeScreen({ navigation }: Props) {
         />
       </InfoCard>
       <Select label="Importer type" placeholder="Select importer type" />
-      <Button onPress={() => navigation.navigate('ApplicantInformation')}>Continue</Button>
+      <Button
+        onPress={() => {
+          void persistImporterStakeholderType();
+          void saveImporterOnboardingDraft(defaultImporterOnboardingDraft);
+          navigation.navigate('ApplicantInformation');
+        }}
+      >
+        Continue
+      </Button>
     </Screen>
   );
 }
