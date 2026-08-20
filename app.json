@@ -6,7 +6,9 @@
     "orientation": "portrait",
     "scheme": "karditimporter",
     "userInterfaceStyle": "light",
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.kardit.importer"
@@ -17,6 +19,9 @@
     "extra": {
       "apiBaseUrl": "https://api.example.invalid",
       "environment": "development"
-    }
+    },
+    "plugins": [
+      "expo-asset"
+    ]
   }
 }
