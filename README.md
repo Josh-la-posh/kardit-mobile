@@ -43,7 +43,7 @@ npm.cmd --prefix apps\importer-mobile run format
 
 ## Architecture
 
-- `src/app`: App composition and providers.
+- `src/application`: App composition and providers.
 - `src/navigation`: Typed root, auth, onboarding, and app navigators.
 - `src/features`: Placeholder screens grouped by importer domain.
 - `src/services/api`: Central API client and typed placeholder modules.

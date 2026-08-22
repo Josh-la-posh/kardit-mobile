@@ -9,7 +9,7 @@ import type { OnboardingStatus } from '@/types/session';
 import { ApiError } from './apiError';
 import { apiClient } from './client';
 
-const onboardingBasePath = '/api/v1/importers/onboarding';
+const onboardingBasePath = '/importers/onboarding';
 
 const createCorrelationId = () =>
   typeof crypto !== 'undefined' && 'randomUUID' in crypto
@@ -20,7 +20,10 @@ const mapApplication = (raw: Record<string, unknown>): ImporterApplication => ({
   applicationId: String(raw.applicationId ?? raw.id ?? raw.ApplicationId ?? raw.Id ?? ''),
   currentStatus: (raw.status ?? raw.currentStatus ?? raw.Status ?? raw.CurrentStatus) as
     ImporterApplication['currentStatus'] | undefined,
+  progress: raw.progress as ImporterApplication['progress'],
   documents: raw.documents as ImporterApplication['documents'],
+  requestedItems: raw.requestedItems as string[] | undefined,
+  complianceReason: String(raw.complianceReason ?? raw.reviewReason ?? raw.reason ?? ''),
   raw,
   referenceNumber: String(
     raw.referenceNumber ??
@@ -76,7 +79,25 @@ const appendDraftFields = (formData: FormData, draft: ImporterOnboardingDraft) =
   formData.append('applicant.nin', draft.nin);
   formData.append('applicant.phone', draft.phone);
   formData.append('applicant.email', draft.email);
+
+  Object.entries(draft.documents).forEach(([documentType, document]) => {
+    if (!document?.uri || document.serverUploaded) return;
+    formData.append('documents', {
+      name: document.fileName,
+      type: document.mimeType,
+      uri: document.uri,
+    } as unknown as Blob);
+    formData.append('documentTypes', importerDocumentTypeForKey(documentType));
+  });
 };
+
+const importerDocumentTypeForKey = (key: string) =>
+  ({
+    authorityToAct: 'AUTHORITY_TO_ACT',
+    cacCertificate: 'CAC_CERTIFICATE',
+    governmentId: 'APPLICANT_GOVERNMENT_ID',
+    proofOfAddress: 'BUSINESS_ADDRESS_PROOF',
+  })[key] ?? key;
 
 const importerOnboardingRequest = async <TResponse>(path: string, init: RequestInit = {}) => {
   if (!env.apiBaseUrl) {
@@ -88,7 +109,7 @@ const importerOnboardingRequest = async <TResponse>(path: string, init: RequestI
     headers: {
       Accept: 'application/json',
       'X-Correlation-ID': createCorrelationId(),
-      'X-Tenant-Id': 'public',
+      'X-Tenant-Id': '',
       ...(init.headers ?? {}),
     },
   });
@@ -140,10 +161,25 @@ export const onboardingApi = {
     const response = await importerOnboardingRequest<Record<string, unknown>>(
       `${onboardingBasePath}/applications/${applicationId}/submit`,
       {
-        body: JSON.stringify({ declarationAccepted }),
+        body: JSON.stringify({ declarationAccepted, consentAccepted: declarationAccepted }),
         headers: { 'Content-Type': 'application/json' },
         method: 'POST',
       },
+    );
+    return mapApplication(response);
+  },
+  submitAdditionalInformation: async (
+    applicationId: string,
+    message: string,
+    draft: ImporterOnboardingDraft,
+  ) => {
+    const formData = new FormData();
+    appendDraftFields(formData, draft);
+    formData.append('notes', message);
+    formData.append('message', message);
+    const response = await importerOnboardingRequest<Record<string, unknown>>(
+      `${onboardingBasePath}/applications/${applicationId}/additional-information`,
+      { body: formData, method: 'POST' },
     );
     return mapApplication(response);
   },

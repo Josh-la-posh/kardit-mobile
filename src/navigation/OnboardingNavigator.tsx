@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { AdditionalInformationRequiredScreen } from '@/features/onboarding/screens/AdditionalInformationRequiredScreen';
+import { ImporterOnboardingProvider } from '@/features/onboarding/ImporterOnboardingContext';
 import { ApplicantInformationScreen } from '@/features/onboarding/screens/ApplicantInformationScreen';
 import { ApplicationStatusScreen } from '@/features/onboarding/screens/ApplicationStatusScreen';
 import { BusinessProfileScreen } from '@/features/onboarding/screens/BusinessProfileScreen';
@@ -14,7 +15,8 @@ const Stack = createNativeStackNavigator<OnboardingStackParamList>();
 
 export function OnboardingNavigator() {
   return (
-    <Stack.Navigator>
+    <ImporterOnboardingProvider>
+      <Stack.Navigator>
       <Stack.Screen
         name="ImporterType"
         component={ImporterTypeScreen}
@@ -50,6 +52,7 @@ export function OnboardingNavigator() {
         component={AdditionalInformationRequiredScreen}
         options={{ title: 'Additional Information' }}
       />
-    </Stack.Navigator>
+      </Stack.Navigator>
+    </ImporterOnboardingProvider>
   );
 }

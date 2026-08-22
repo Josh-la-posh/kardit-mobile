@@ -2,6 +2,17 @@ export type ImporterBusinessType = 'LLC' | 'RegisteredBusiness';
 
 export type ImporterApplicantRole = 'Owner' | 'Director' | 'Employee' | 'Authorised Agent';
 
+export type ImporterDocument = {
+  fileName: string;
+  mimeType: string;
+  sizeMb: number;
+  uri?: string;
+  uploadProgress?: number;
+  serverUploaded?: boolean;
+  verificationStatus?: string;
+  scanStatus?: string;
+};
+
 export type ImporterApplicationStatus =
   | 'DRAFT'
   | 'SUBMITTED'
@@ -31,9 +42,7 @@ export type ImporterOnboardingDraft = {
   cacNumber: string;
   currentStatus?: ImporterApplicationStatus;
   declarationAccepted: boolean;
-  documents: Partial<
-    Record<ImporterDocumentKey, { fileName: string; mimeType: string; sizeMb: number }>
-  >;
+  documents: Partial<Record<ImporterDocumentKey, ImporterDocument>>;
   email: string;
   expectedImportValue: string;
   fullName: string;
@@ -62,7 +71,16 @@ export type ImporterOnboardingOptions = {
 export type ImporterApplication = {
   applicationId: string;
   currentStatus?: ImporterApplicationStatus;
+  progress?: {
+    currentStep?: number;
+    currentStepKey?: string;
+    route?: string;
+    canSubmit?: boolean;
+    startedAt?: string;
+  };
   documents?: ImporterOnboardingDraft['documents'];
+  requestedItems?: string[];
+  complianceReason?: string;
   raw?: unknown;
   referenceNumber?: string;
   rejectionReason?: string;

@@ -10,6 +10,10 @@ export const importerDocumentTypeMap: Record<ImporterDocumentKey, string> = {
 const roleRequiresAuthorityToAct = (role: ImporterOnboardingDraft['role']) =>
   role === 'Employee' || role === 'Authorised Agent';
 
+const validEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+const validPhone = (value: string) => /^\+?[\d\s().-]{7,}$/.test(value);
+const acceptedMimeTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+
 export function getRequiredImporterDocuments(
   draft: ImporterOnboardingDraft,
 ): ImporterDocumentKey[] {
@@ -33,12 +37,12 @@ export function validateImporterOnboardingStep(
       'taxId',
       'legalBusinessName',
       'businessStatus',
+      'businessPhone',
+      'businessEmail',
       'addressLine1',
       'addressCountry',
       'addressState',
       'addressCity',
-      'businessPhone',
-      'businessEmail',
       'fullName',
       'role',
       'nin',
@@ -49,11 +53,24 @@ export function validateImporterOnboardingStep(
     });
 
     if (!/^\d{11}$/.test(draft.nin)) missing.push('nin: 11 digits required');
+    if (!validEmail(draft.businessEmail)) missing.push('businessEmail: invalid email');
+    if (!validEmail(draft.email)) missing.push('email: invalid email');
+    if (!validPhone(draft.businessPhone)) missing.push('businessPhone: invalid phone');
+    if (!validPhone(draft.phone)) missing.push('phone: invalid phone');
   }
 
   if (step >= 2) {
     getRequiredImporterDocuments(draft).forEach((documentKey) => {
-      if (!draft.documents[documentKey]) missing.push(documentKey);
+      const document = draft.documents[documentKey];
+      if (!document) {
+        missing.push(documentKey);
+      } else {
+        if (!acceptedMimeTypes.includes(document.mimeType)) missing.push(`${documentKey}: format`);
+        if (document.sizeMb > 10) missing.push(`${documentKey}: 10MB maximum`);
+        if (document.uploadProgress !== 100 && !document.serverUploaded) {
+          missing.push(`${documentKey}: upload incomplete`);
+        }
+      }
     });
   }
 

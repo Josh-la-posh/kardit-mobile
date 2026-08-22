@@ -5,42 +5,42 @@ import { Button } from '@/components/ui/Button';
 import { InfoCard } from '@/components/ui/InfoCard';
 import { ListItem } from '@/components/ui/ListItem';
 import { StepIndicator } from '@/components/ui/StepIndicator';
-import {
-  defaultImporterOnboardingDraft,
-  saveImporterApplication,
-} from '@/features/onboarding/importerOnboardingStorage';
+import { Switch } from 'react-native';
+import { useImporterOnboarding } from '@/features/onboarding/ImporterOnboardingContext';
 import { validateImporterOnboardingStep } from '@/features/onboarding/importerOnboardingValidation';
 import type { OnboardingStackParamList } from '@/navigation/types';
 
 type Props = NativeStackScreenProps<OnboardingStackParamList, 'ReviewDeclaration'>;
 
 export function ReviewDeclarationScreen({ navigation }: Props) {
+  const { draft, error, loading, submit, updateDraft } = useImporterOnboarding();
+  const validation = validateImporterOnboardingStep(draft, 4);
+
   return (
     <Screen>
-      <AppHeader title="Review" subtitle="Confirm your demo application details." />
+      <AppHeader title="Review and declaration" subtitle="Confirm your application before submission." />
       <StepIndicator current={4} total={5} />
       <InfoCard title="Review summary">
-        <ListItem title="Business type" detail={defaultImporterOnboardingDraft.businessType} />
-        <ListItem title="Applicant" detail={defaultImporterOnboardingDraft.fullName} />
-        <ListItem title="Documents" detail="Pending upload" />
+        <ListItem title="Business type" detail={draft.businessType} onPress={() => navigation.navigate('ApplicantInformation')} />
+        <ListItem title="Applicant" detail={draft.fullName} onPress={() => navigation.navigate('ApplicantInformation')} />
+        <ListItem title="Documents" detail={`${Object.keys(draft.documents).length} uploaded`} onPress={() => navigation.navigate('DocumentSubmission')} />
+        <ListItem title="Import profile" detail={draft.businessSector} onPress={() => navigation.navigate('BusinessProfile')} />
         <ListItem
           title="Validation"
-          meta={`${validateImporterOnboardingStep(defaultImporterOnboardingDraft, 4).missing.length} demo issues until declaration is accepted`}
+          meta={`${validation.missing.length} required items remaining`}
           detail="Local"
         />
       </InfoCard>
+      <InfoCard title="Declaration">
+        <ListItem title="I declare that the information provided is true, accurate, and submitted by an authorised representative of this business." detail={draft.declarationAccepted ? 'Accepted' : 'Required'} />
+        <Switch value={draft.declarationAccepted} onValueChange={(declarationAccepted) => updateDraft({ declarationAccepted })} />
+      </InfoCard>
+      {error ? <ListItem title="Submission failed" meta={error} detail="Retry" /> : null}
       <Button
-        onPress={() => {
-          void saveImporterApplication({
-            applicationId: 'IMP-DEMO-APP-001',
-            currentStatus: 'SUBMITTED',
-            referenceNumber: 'KDT-IMP-ONB-001',
-            submittedAt: new Date().toISOString(),
-          });
-          navigation.navigate('ApplicationStatus');
-        }}
+        disabled={loading || !validation.valid}
+        onPress={() => void submit().then((submitted) => submitted && navigation.navigate('ApplicationStatus'))}
       >
-        Submit demo application
+        {loading ? 'Submitting...' : 'Submit application'}
       </Button>
     </Screen>
   );

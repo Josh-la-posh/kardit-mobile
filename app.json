@@ -21,7 +21,8 @@
       "environment": "development"
     },
     "plugins": [
-      "expo-asset"
+      "expo-asset",
+      "expo-font"
     ]
   }
 }
