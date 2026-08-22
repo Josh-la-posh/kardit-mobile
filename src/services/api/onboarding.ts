@@ -8,6 +8,7 @@ import type { OnboardingStatus } from '@/types/session';
 
 import { ApiError } from './apiError';
 import { apiClient } from './client';
+import { mockOnboardingApi } from './mockOnboarding';
 
 const onboardingBasePath = '/importers/onboarding';
 
@@ -124,8 +125,7 @@ const importerOnboardingRequest = async <TResponse>(path: string, init: RequestI
   return parsed;
 };
 
-// TODO: Keep these importer onboarding contracts aligned with backend before enabling real submission.
-export const onboardingApi = {
+const realOnboardingApi = {
   createImporterApplication: async (draft: ImporterOnboardingDraft) => {
     const formData = new FormData();
     appendDraftFields(formData, draft);
@@ -193,3 +193,6 @@ export const onboardingApi = {
     return mapApplication(response);
   },
 };
+
+// Uses mock mode by default while the repo still points at api.example.invalid.
+export const onboardingApi = env.useMockOnboardingApi ? mockOnboardingApi : realOnboardingApi;

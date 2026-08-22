@@ -18,7 +18,8 @@
     },
     "extra": {
       "apiBaseUrl": "https://api.example.invalid",
-      "environment": "development"
+      "environment": "development",
+      "onboardingApiMode": "auto"
     },
     "plugins": [
       "expo-asset",
