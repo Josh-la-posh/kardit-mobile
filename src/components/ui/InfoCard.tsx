@@ -7,8 +7,8 @@ export function InfoCard({ children, title }: PropsWithChildren<{ title: string 
   const { colors } = useTheme();
 
   return (
-    <View style={[styles.card, { backgroundColor: colors.card, borderColor: colors.line }]}>
-      <Text style={[styles.title, { color: colors.text }]}>{title}</Text>
+    <View style={[styles.card, { backgroundColor: colors.cardBackground, borderColor: colors.border }]}>
+      <Text style={[styles.title, { color: colors.titleText }]}>{title}</Text>
       {children}
     </View>
   );

@@ -1,4 +1,5 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { StyleSheet, Text, View } from 'react-native';
 import { Screen } from '@/components/layout/Screen';
 import { AppHeader } from '@/components/ui/AppHeader';
 import { Button } from '@/components/ui/Button';
@@ -8,6 +9,7 @@ import { ListItem } from '@/components/ui/ListItem';
 import { StatusPill } from '@/components/ui/StatusPill';
 import { Timeline } from '@/components/ui/Timeline';
 import type { TransactionsStackParamList } from '@/navigation/types';
+import { radii, spacing, typography, useTheme } from '@/theme';
 import {
   mockComplianceDocuments,
   mockTransactions,
@@ -17,6 +19,7 @@ import {
 type Props = NativeStackScreenProps<TransactionsStackParamList, 'TransactionDetails'>;
 
 export function TransactionDetailsScreen({ navigation, route }: Props) {
+  const { colors } = useTheme();
   const transaction =
     mockTransactions.find((item) => item.id === route.params.transactionId) ?? mockTransactions[0];
   const documents = mockComplianceDocuments.filter(
@@ -28,13 +31,19 @@ export function TransactionDetailsScreen({ navigation, route }: Props) {
     <Screen>
       <AppHeader
         title="Transaction details"
-        subtitle="Demo transaction metadata, linked documents, timeline, and support actions."
+        subtitle="Reference, route, linked documents, timeline, and support actions."
       />
-      <InfoCard title={transaction.title}>
+      <View style={[styles.hero, { backgroundColor: colors.cardBackground, borderColor: colors.border }]}>
+        <Text style={[styles.heroLabel, { color: colors.textMuted }]}>{transaction.reference}</Text>
+        <Text style={[styles.heroAmount, { color: colors.titleText }]}>
+          {transaction.amount.formatted}
+        </Text>
         <StatusPill
           label={transaction.status}
-          tone={transaction.status === 'failed' ? 'danger' : 'warning'}
+          tone={transaction.status === 'failed' ? 'danger' : transaction.status === 'completed' ? 'success' : 'warning'}
         />
+      </View>
+      <InfoCard title={transaction.title}>
         <ListItem title="Reference" detail={transaction.reference} />
         <ListItem title="Amount" detail={transaction.amount.formatted} />
         <ListItem title="Type" detail={transaction.type} />
@@ -81,3 +90,22 @@ export function TransactionDetailsScreen({ navigation, route }: Props) {
     </Screen>
   );
 }
+
+const styles = StyleSheet.create({
+  hero: {
+    alignItems: 'flex-start',
+    borderRadius: radii.md,
+    borderWidth: 1,
+    gap: spacing.sm,
+    padding: spacing.lg,
+  },
+  heroAmount: {
+    fontSize: 30,
+    fontVariant: ['tabular-nums'],
+    fontWeight: '700',
+  },
+  heroLabel: {
+    fontSize: typography.small,
+    fontWeight: '600',
+  },
+});

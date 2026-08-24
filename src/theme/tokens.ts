@@ -32,7 +32,10 @@ export const colors = {
 };
 
 export const colorSchemes = {
-  light: colors,
+  light: {
+    ...colors,
+    cardBackground: '#FFFFFF', buttonBackground: '#FFFFFF', titleText: '#101311', text: '#101311', iconColor: '#1B7A45',
+  },
   dark: {
     ...colors,
     background: '#08110C',
@@ -54,6 +57,7 @@ export const colorSchemes = {
     scarletTint: '#3B171A',
     amberTint: '#332513',
     slateTint: '#1D2930',
+    cardBackground: '#111A14', buttonBackground: '#18241D', titleText: '#F4F7F2', iconColor: '#6FCF97',
   },
 };
 

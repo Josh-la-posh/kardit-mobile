@@ -19,13 +19,13 @@ export function ListItem({
     <Pressable
       accessibilityRole={onPress ? 'button' : undefined}
       onPress={onPress}
-      style={[styles.item, { backgroundColor: colors.lineSoft }]}
+      style={[styles.item, { backgroundColor: colors.buttonBackground, borderColor: colors.border }]}
     >
       <View style={styles.text}>
-        <Text style={[styles.title, { color: colors.ink }]}>{title}</Text>
-        {meta ? <Text style={[styles.meta, { color: colors.muted }]}>{meta}</Text> : null}
+        <Text style={[styles.title, { color: colors.titleText }]}>{title}</Text>
+        {meta ? <Text style={[styles.meta, { color: colors.textMuted }]}>{meta}</Text> : null}
       </View>
-      {detail ? <Text style={[styles.detail, { color: colors.ink2 }]}>{detail}</Text> : null}
+      {detail ? <Text style={[styles.detail, { color: colors.text }]}>{detail}</Text> : null}
     </Pressable>
   );
 }
@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
   item: {
     alignItems: 'center',
     borderRadius: radii.md,
+    borderWidth: 1,
     flexDirection: 'row',
     gap: spacing.md,
     justifyContent: 'space-between',

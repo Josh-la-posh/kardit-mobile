@@ -1,5 +1,7 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
+import { View, StyleSheet } from 'react-native';
+
 import { Screen } from '@/components/layout/Screen';
 import { AppHeader } from '@/components/ui/AppHeader';
 import { Button } from '@/components/ui/Button';
@@ -13,6 +15,7 @@ import {
   placeholderMaxActiveCards,
 } from '@/features/cards/cardRules';
 import type { CardsStackParamList } from '@/navigation/types';
+import { spacing } from '@/theme';
 import { mockCards } from '@/utils/mockData';
 
 type Props = NativeStackScreenProps<CardsStackParamList, 'CardsList'>;
@@ -31,19 +34,22 @@ export function CardsListScreen({ navigation }: Props) {
       {mockCards.length === 0 ? (
         <EmptyState title="No cards yet" message="Your cards will appear here." />
       ) : (
-        mockCards.map((card) => (
-          <Button
-            key={card.id}
-            onPress={() => navigation.navigate('CardDetails', { cardId: card.id })}
-            variant="ghost"
-          >
-            View {card.label}
-          </Button>
-        ))
+        <View style={styles.cards}>
+          {mockCards.map((card) => (
+            <CardPreview
+              key={card.id}
+              card={card}
+              onPress={() => navigation.navigate('CardDetails', { cardId: card.id })}
+            />
+          ))}
+        </View>
       )}
-      {mockCards.map((card) => (
-        <CardPreview key={`preview-${card.id}`} card={card} />
-      ))}
     </Screen>
   );
 }
+
+const styles = StyleSheet.create({
+  cards: {
+    gap: spacing.lg,
+  },
+});

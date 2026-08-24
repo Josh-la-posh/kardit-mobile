@@ -5,6 +5,7 @@ import { AccountSecurityScreen } from '@/features/account/screens/AccountSecurit
 import { LogoutConfirmationScreen } from '@/features/account/screens/LogoutConfirmationScreen';
 import { LogoutResultScreen } from '@/features/account/screens/LogoutResultScreen';
 import { ProfileScreen } from '@/features/profile/screens/ProfileScreen';
+import { ThemeScreen } from '@/features/profile/screens/ThemeScreen';
 
 import type { AccountStackParamList } from './types';
 
@@ -19,6 +20,7 @@ export function AccountNavigator() {
         component={AccountDetailsScreen}
         options={{ title: 'Account Details' }}
       />
+      <Stack.Screen name="AccountTheme" component={ThemeScreen} options={{ title: 'App Theme' }} />
       <Stack.Screen
         name="AccountSecurity"
         component={AccountSecurityScreen}
