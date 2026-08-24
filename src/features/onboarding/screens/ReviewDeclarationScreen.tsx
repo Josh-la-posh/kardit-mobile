@@ -28,7 +28,7 @@ export function ReviewDeclarationScreen({ navigation }: Props) {
         <ListItem
           title="Validation"
           meta={`${validation.missing.length} required items remaining`}
-          detail="Local"
+          detail={validation.valid ? 'Ready' : 'Required'}
         />
       </InfoCard>
       <InfoCard title="Declaration">

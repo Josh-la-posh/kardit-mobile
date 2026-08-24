@@ -13,7 +13,16 @@ import type { OnboardingStackParamList } from '@/navigation/types';
 type Props = NativeStackScreenProps<OnboardingStackParamList, 'ApplicantInformation'>;
 
 export function ApplicantInformationScreen({ navigation }: Props) {
-  const { draft, error, loading, saveStep, updateDraft } = useImporterOnboarding();
+  const {
+    draft,
+    error,
+    loading,
+    options,
+    optionsError,
+    optionsLoading,
+    saveStep,
+    updateDraft,
+  } = useImporterOnboarding();
   const validation = validateImporterOnboardingStep(draft, 1);
 
   return (
@@ -36,14 +45,32 @@ export function ApplicantInformationScreen({ navigation }: Props) {
       <Input label="State" value={draft.addressState} onChangeText={(addressState) => updateDraft({ addressState, addressCity: '' })} />
       <Input label="City / LGA" value={draft.addressCity} onChangeText={(addressCity) => updateDraft({ addressCity })} />
       <Input label="Full name" value={draft.fullName} onChangeText={(fullName) => updateDraft({ fullName })} />
-      <Input label="Role" value={draft.role} onChangeText={(role) => updateDraft({ role: role as typeof draft.role })} />
+      <ListItem
+        title="Role"
+        meta={
+          optionsLoading
+            ? 'Loading roles...'
+            : options?.roles?.length
+              ? 'Select the representative role below'
+              : optionsError || 'No roles returned by backend'
+        }
+        detail={draft.role || 'Required'}
+      />
+      {options?.roles?.map((role) => (
+        <ListItem
+          key={role}
+          title={role}
+          detail={draft.role === role ? 'Selected' : 'Select'}
+          onPress={() => updateDraft({ role })}
+        />
+      ))}
       <Input label="NIN" value={draft.nin} onChangeText={(nin) => updateDraft({ nin: nin.replace(/\D/g, '').slice(0, 11) })} keyboardType="number-pad" />
       <Input label="Phone number" value={draft.phone} onChangeText={(phone) => updateDraft({ phone })} keyboardType="phone-pad" />
       <Input label="Email address" value={draft.email} onChangeText={(email) => updateDraft({ email })} keyboardType="email-address" />
       <ListItem
         title="Validation"
         meta={`${validation.missing.length} required items remaining`}
-        detail="Local"
+        detail={validation.valid ? 'Ready' : 'Required'}
       />
       {error ? <ListItem title="Save failed" meta={error} detail="Retry" /> : null}
       <Button

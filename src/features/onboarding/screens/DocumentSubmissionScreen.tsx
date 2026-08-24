@@ -45,7 +45,7 @@ export function DocumentSubmissionScreen({ navigation }: Props) {
     <Screen>
       <AppHeader
         title="Documents"
-        subtitle="Upload placeholders for business and representative checks."
+        subtitle="Upload business and representative documents."
       />
       <StepIndicator current={2} total={5} />
       <InfoCard title="Required documents">
