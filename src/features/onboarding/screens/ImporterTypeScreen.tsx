@@ -23,6 +23,8 @@ export function ImporterTypeScreen({ navigation }: Props) {
     navigation.navigate(screen);
   };
 
+  console.log('ImporterTypeScreen render', { error, applicationId });
+
   return (
     <Screen>
       <AppHeader
