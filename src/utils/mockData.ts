@@ -33,7 +33,9 @@ export const mockCards: ImporterCard[] = [
     bankName: 'Sample Issuing Bank',
     status: 'active',
     balance: 'NGN 250,000',
-    maskedNumber: '**** **** **** 4821',
+    maskedNumber: '6229 3461 0000 4821',
+    holderName: 'JOSHUA IMPORTER',
+    expiry: '01/29',
   },
   {
     id: 'card_002',
@@ -42,7 +44,9 @@ export const mockCards: ImporterCard[] = [
     bankName: 'Trade Finance Bank',
     status: 'active',
     balance: 'NGN 120,000',
-    maskedNumber: '**** **** **** 1190',
+    maskedNumber: '6229 3461 0000 1190',
+    holderName: 'SAMPLE IMPORTER LTD',
+    expiry: '01/29',
   },
 ];
 

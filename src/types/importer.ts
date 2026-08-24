@@ -21,6 +21,8 @@ export type ImporterCard = {
   status: CardStatus;
   balance: string;
   maskedNumber?: string;
+  holderName?: string;
+  expiry?: string;
   capabilities?: CardCapability[];
 };
 
