@@ -8,8 +8,7 @@ export function AccountProvisioningPendingScreen() {
     <Screen>
       <InfoCard title="Account provisioning pending">
         <Text>
-          PRD-ready placeholder for approved importers whose Kardit Business account is still being
-          provisioned by Kardit Core.
+          Your importer application has been approved. Kardit is provisioning your business account.
         </Text>
       </InfoCard>
     </Screen>

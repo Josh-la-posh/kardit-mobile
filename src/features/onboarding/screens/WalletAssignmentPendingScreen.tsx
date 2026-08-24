@@ -8,8 +8,7 @@ export function WalletAssignmentPendingScreen() {
     <Screen>
       <InfoCard title="Wallet assignment pending">
         <Text>
-          PRD-ready placeholder for approved and provisioned importers waiting for central wallet
-          assignment before wallet-dependent capabilities become available.
+          Your business account is ready. Kardit is assigning your central wallet.
         </Text>
       </InfoCard>
     </Screen>

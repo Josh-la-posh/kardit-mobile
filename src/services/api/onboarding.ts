@@ -7,9 +7,8 @@ import type {
 import type { OnboardingStatus } from '@/types/session';
 
 import { ApiError } from './apiError';
-import { apiClient } from './client';
 
-const onboardingBasePath = '/api/v1/importers/onboarding';
+const onboardingBasePath = '/importers/onboarding';
 
 const createCorrelationId = () =>
   typeof crypto !== 'undefined' && 'randomUUID' in crypto
@@ -20,7 +19,10 @@ const mapApplication = (raw: Record<string, unknown>): ImporterApplication => ({
   applicationId: String(raw.applicationId ?? raw.id ?? raw.ApplicationId ?? raw.Id ?? ''),
   currentStatus: (raw.status ?? raw.currentStatus ?? raw.Status ?? raw.CurrentStatus) as
     ImporterApplication['currentStatus'] | undefined,
+  progress: raw.progress as ImporterApplication['progress'],
   documents: raw.documents as ImporterApplication['documents'],
+  requestedItems: raw.requestedItems as string[] | undefined,
+  complianceReason: String(raw.complianceReason ?? raw.reviewReason ?? raw.reason ?? ''),
   raw,
   referenceNumber: String(
     raw.referenceNumber ??
@@ -76,7 +78,25 @@ const appendDraftFields = (formData: FormData, draft: ImporterOnboardingDraft) =
   formData.append('applicant.nin', draft.nin);
   formData.append('applicant.phone', draft.phone);
   formData.append('applicant.email', draft.email);
+
+  Object.entries(draft.documents).forEach(([documentType, document]) => {
+    if (!document?.uri || document.serverUploaded) return;
+    formData.append('documents', {
+      name: document.fileName,
+      type: document.mimeType,
+      uri: document.uri,
+    } as unknown as Blob);
+    formData.append('documentTypes', importerDocumentTypeForKey(documentType));
+  });
 };
+
+const importerDocumentTypeForKey = (key: string) =>
+  ({
+    authorityToAct: 'AUTHORITY_TO_ACT',
+    cacCertificate: 'CAC_CERTIFICATE',
+    governmentId: 'APPLICANT_GOVERNMENT_ID',
+    proofOfAddress: 'BUSINESS_ADDRESS_PROOF',
+  })[key] ?? key;
 
 const importerOnboardingRequest = async <TResponse>(path: string, init: RequestInit = {}) => {
   if (!env.apiBaseUrl) {
@@ -88,13 +108,20 @@ const importerOnboardingRequest = async <TResponse>(path: string, init: RequestI
     headers: {
       Accept: 'application/json',
       'X-Correlation-ID': createCorrelationId(),
-      'X-Tenant-Id': 'public',
+      'X-Tenant-Id': '',
       ...(init.headers ?? {}),
     },
   });
 
   const body = await response.text();
-  const parsed = body ? (JSON.parse(body) as TResponse) : (undefined as TResponse);
+  let parsed = undefined as TResponse;
+  if (body) {
+    try {
+      parsed = JSON.parse(body) as TResponse;
+    } catch {
+      parsed = body as TResponse;
+    }
+  }
 
   if (!response.ok) {
     throw new ApiError(`Request failed (${response.status})`, response.status, parsed);
@@ -103,8 +130,7 @@ const importerOnboardingRequest = async <TResponse>(path: string, init: RequestI
   return parsed;
 };
 
-// TODO: Keep these importer onboarding contracts aligned with backend before enabling real submission.
-export const onboardingApi = {
+const realOnboardingApi = {
   createImporterApplication: async (draft: ImporterOnboardingDraft) => {
     const formData = new FormData();
     appendDraftFields(formData, draft);
@@ -115,7 +141,9 @@ export const onboardingApi = {
     return mapApplication(response);
   },
   getApplicationStatus: () =>
-    apiClient.get<{ status: string; nextStep?: string }>('/importers/onboarding/status'),
+    importerOnboardingRequest<{ status: string; nextStep?: string }>(
+      '/importers/onboarding/status',
+    ),
   getImporterApplication: async (applicationId: string) => {
     const response = await importerOnboardingRequest<Record<string, unknown>>(
       `${onboardingBasePath}/applications/${applicationId}`,
@@ -129,21 +157,50 @@ export const onboardingApi = {
   getImporterOnboardingOptions: () =>
     importerOnboardingRequest<ImporterOnboardingOptions>(`${onboardingBasePath}/options`),
   getOnboardingStatus: () =>
-    apiClient.get<{ nextStep?: string; status: OnboardingStatus }>('/importers/onboarding/status'),
+    importerOnboardingRequest<{ nextStep?: string; status: OnboardingStatus }>(
+      '/importers/onboarding/status',
+    ),
   saveApplicantDetails: (payload: unknown) =>
-    apiClient.post<{ saved: boolean }>('/importers/onboarding/applicant', payload),
+    importerOnboardingRequest<{ saved: boolean }>('/importers/onboarding/applicant', {
+      body: JSON.stringify(payload),
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+    }),
   submitApplication: (payload: unknown) =>
-    apiClient.post<{ submitted: boolean }>('/importers/onboarding/submit', payload),
+    importerOnboardingRequest<{ submitted: boolean }>('/importers/onboarding/submit', {
+      body: JSON.stringify(payload),
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+    }),
   submitDocuments: (payload: unknown) =>
-    apiClient.post<{ submitted: boolean }>('/importers/onboarding/documents', payload),
+    importerOnboardingRequest<{ submitted: boolean }>('/importers/onboarding/documents', {
+      body: JSON.stringify(payload),
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+    }),
   submitImporterApplication: async (applicationId: string, declarationAccepted: boolean) => {
     const response = await importerOnboardingRequest<Record<string, unknown>>(
       `${onboardingBasePath}/applications/${applicationId}/submit`,
       {
-        body: JSON.stringify({ declarationAccepted }),
+        body: JSON.stringify({ declarationAccepted, consentAccepted: declarationAccepted }),
         headers: { 'Content-Type': 'application/json' },
         method: 'POST',
       },
+    );
+    return mapApplication(response);
+  },
+  submitAdditionalInformation: async (
+    applicationId: string,
+    message: string,
+    draft: ImporterOnboardingDraft,
+  ) => {
+    const formData = new FormData();
+    appendDraftFields(formData, draft);
+    formData.append('notes', message);
+    formData.append('message', message);
+    const response = await importerOnboardingRequest<Record<string, unknown>>(
+      `${onboardingBasePath}/applications/${applicationId}/additional-information`,
+      { body: formData, method: 'POST' },
     );
     return mapApplication(response);
   },
@@ -157,3 +214,5 @@ export const onboardingApi = {
     return mapApplication(response);
   },
 };
+
+export const onboardingApi = realOnboardingApi;

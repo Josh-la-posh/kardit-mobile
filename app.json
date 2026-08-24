@@ -17,11 +17,12 @@
       "package": "com.kardit.importer"
     },
     "extra": {
-      "apiBaseUrl": "https://api.example.invalid",
+      "apiBaseUrl": "http://167.172.49.177:8080",
       "environment": "development"
     },
     "plugins": [
-      "expo-asset"
+      "expo-asset",
+      "expo-font"
     ]
   }
 }

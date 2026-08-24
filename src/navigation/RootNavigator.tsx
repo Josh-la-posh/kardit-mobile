@@ -56,7 +56,14 @@ export function RootNavigator() {
         }}
       >
         {appGate === 'unauthenticated' ? (
-          <Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
+          <>
+            <Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
+            <Stack.Screen
+              name="Onboarding"
+              component={OnboardingNavigator}
+              options={{ headerShown: false }}
+            />
+          </>
         ) : appGate === 'onboarding_required' ? (
           <Stack.Screen
             name="Onboarding"
