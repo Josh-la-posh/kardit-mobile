@@ -32,7 +32,7 @@ export function DashboardScreen({ navigation }: Props) {
           </Pressable>
           <Pressable
             accessibilityRole="button"
-            onPress={() => navigation.navigate('Account', { screen: 'AccountDetails' })}
+            onPress={() => navigation.navigate('Account', { screen: 'AccountHome' })}
             style={[styles.avatar, { backgroundColor: colors.forest }]}
           >
             <Text style={styles.avatarText}>JI</Text>
