@@ -84,6 +84,7 @@ export type AccountStackParamList = {
   AccountHome: undefined;
   AccountDetails: undefined;
   AccountSecurity: undefined;
+  AccountTheme: undefined;
   LogoutConfirmation: undefined;
   LogoutResult: undefined;
 };
