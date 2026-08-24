@@ -1,13 +1,12 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { radii, shadows, spacing, typography, useTheme } from '@/theme';
 import type { ImporterCard } from '@/types/importer';
 
-export function CardPreview({ card }: { card: ImporterCard }) {
+export function CardPreview({ card, onPress }: { card: ImporterCard; onPress?: () => void }) {
   const { colors } = useTheme();
-
-  return (
-    <View style={[styles.card, { backgroundColor: colors.forestDeep }]}>
+  const content = (
+    <>
       <View style={styles.row}>
         <Text style={styles.brand}>Kardit</Text>
         <Text style={styles.pill}>{card.status}</Text>
@@ -21,6 +20,28 @@ export function CardPreview({ card }: { card: ImporterCard }) {
         </View>
         <Text style={styles.type}>{card.type}</Text>
       </View>
+    </>
+  );
+
+  if (onPress) {
+    return (
+      <Pressable
+        accessibilityRole="button"
+        onPress={onPress}
+        style={({ pressed }) => [
+          styles.card,
+          { backgroundColor: colors.accent },
+          pressed && styles.pressed,
+        ]}
+      >
+        {content}
+      </Pressable>
+    );
+  }
+
+  return (
+    <View style={[styles.card, { backgroundColor: colors.accent }]}>
+      {content}
     </View>
   );
 }
@@ -50,6 +71,10 @@ const styles = StyleSheet.create({
     padding: spacing.xl,
     width: 292,
     ...shadows.medium,
+  },
+  pressed: {
+    opacity: 0.9,
+    transform: [{ scale: 0.99 }],
   },
   number: {
     color: '#FFFFFF',

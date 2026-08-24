@@ -9,7 +9,7 @@ import { ListItem } from '@/components/ui/ListItem';
 import { SectionHeader } from '@/components/ui/SectionHeader';
 import type { MainTabParamList } from '@/navigation/types';
 import { spacing, typography, useTheme } from '@/theme';
-import { mockCards, mockExchangeRates, mockTransactions, mockWallet } from '@/utils/mockData';
+import { mockCards, mockTransactions, mockWallet } from '@/utils/mockData';
 
 type Props = BottomTabScreenProps<MainTabParamList, 'Dashboard'>;
 
@@ -55,22 +55,14 @@ export function DashboardScreen({ navigation }: Props) {
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View style={styles.cardStrip}>
             {mockCards.map((card) => (
-              <CardPreview key={card.id} card={card} />
+              <CardPreview
+                key={card.id}
+                card={card}
+                onPress={() => navigation.navigate('Cards', { screen: 'CardDetails', params: { cardId: card.id } })}
+              />
             ))}
           </View>
         </ScrollView>
-      </View>
-
-      <View style={styles.section}>
-        <SectionHeader title="Rates" />
-        {mockExchangeRates.map((rate) => (
-          <ListItem
-            key={`${rate.fromCurrency}-${rate.toCurrency}`}
-            title={`${rate.fromCurrency} to ${rate.toCurrency}`}
-            meta="Indicative"
-            detail={rate.rate}
-          />
-        ))}
       </View>
 
       <View style={styles.section}>

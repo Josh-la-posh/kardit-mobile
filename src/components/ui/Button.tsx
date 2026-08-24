@@ -20,14 +20,15 @@ export function Button({ children, disabled, onPress, variant = 'primary' }: But
       style={({ pressed }) => [
         styles.base,
         variant === 'primary' && { backgroundColor: colors.primary },
-        variant === 'secondary' && { backgroundColor: colors.primaryMuted },
+        variant === 'secondary' && { backgroundColor: colors.buttonBackground, borderColor: colors.border, borderWidth: 1 },
         variant === 'ghost' && { backgroundColor: 'transparent', borderColor: colors.line },
+        variant === 'ghost' && styles.ghost,
         disabled && styles.disabled,
         pressed && !disabled && styles.pressed,
       ]}
     >
       <Text
-        style={[styles.label, { color: variant === 'primary' ? colors.surface : colors.primary }]}
+        style={[styles.label, { color: variant === 'primary' ? colors.surface : colors.iconColor }]}
       >
         {children}
       </Text>

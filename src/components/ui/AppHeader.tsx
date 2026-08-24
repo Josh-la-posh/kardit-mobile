@@ -13,9 +13,9 @@ export function AppHeader({ eyebrow = 'Demo workspace', subtitle, title }: AppHe
 
   return (
     <View style={styles.wrapper}>
-      <Text style={[styles.eyebrow, { color: colors.forestDeep }]}>{eyebrow}</Text>
-      <Text style={[styles.title, { color: colors.ink }]}>{title}</Text>
-      {subtitle ? <Text style={[styles.subtitle, { color: colors.muted }]}>{subtitle}</Text> : null}
+      <Text style={[styles.eyebrow, { color: colors.iconColor }]}>{eyebrow}</Text>
+      <Text style={[styles.title, { color: colors.titleText }]}>{title}</Text>
+      {subtitle ? <Text style={[styles.subtitle, { color: colors.textMuted }]}>{subtitle}</Text> : null}
     </View>
   );
 }
