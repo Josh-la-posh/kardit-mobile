@@ -6,8 +6,6 @@ import { Button } from '@/components/ui/Button';
 import { InfoCard } from '@/components/ui/InfoCard';
 import { Input } from '@/components/ui/Input';
 import { ListItem } from '@/components/ui/ListItem';
-import { Select } from '@/components/ui/Select';
-import { StepIndicator } from '@/components/ui/StepIndicator';
 import { useImporterOnboarding } from '@/features/onboarding/ImporterOnboardingContext';
 import { clearImporterOnboarding, persistImporterStakeholderType } from '@/features/onboarding/importerOnboardingStorage';
 import type { OnboardingStackParamList } from '@/navigation/types';
@@ -16,6 +14,7 @@ type Props = NativeStackScreenProps<OnboardingStackParamList, 'ImporterType'>;
 
 export function ImporterTypeScreen({ navigation }: Props) {
   const [applicationId, setApplicationId] = useState('');
+  const [applicationIdError, setApplicationIdError] = useState('');
   const { error, loading, lookupApplication, startNewApplication } = useImporterOnboarding();
 
   const openStep = (step: number) => {
@@ -23,42 +22,51 @@ export function ImporterTypeScreen({ navigation }: Props) {
     navigation.navigate(screen);
   };
 
-  console.log('ImporterTypeScreen render', { error, applicationId });
+  const startApplication = () =>
+    void clearImporterOnboarding()
+      .then(persistImporterStakeholderType)
+      .then(() => startNewApplication())
+      .then(() => navigation.navigate('ApplicantInformation'));
+
+  const lookupExistingApplication = (trackOnly: boolean) => {
+    const trimmedApplicationId = applicationId.trim();
+    if (!trimmedApplicationId) {
+      setApplicationIdError('Enter an application ID to continue.');
+      return;
+    }
+
+    setApplicationIdError('');
+    void lookupApplication(trimmedApplicationId, trackOnly).then((step) => step && openStep(step));
+  };
 
   return (
     <Screen>
-      <AppHeader
-        eyebrow="Onboarding demo"
-        title="Business type"
-        subtitle="Choose how your importer business is registered."
-      />
-      <StepIndicator current={1} total={5} />
-      <InfoCard title="Applicant type">
-        <ListItem
-          title="Rule pending"
-          meta="Requirements may vary for LLC or registered business."
-          detail="Demo"
-        />
-      </InfoCard>
-      <Select label="Importer type" value="Importer" placeholder="Select importer type" />
-      <Button
-        onPress={() => void clearImporterOnboarding().then(persistImporterStakeholderType).then(() => startNewApplication()).then(() => navigation.navigate('ApplicantInformation'))}
-      >
+      <AppHeader title="Sign up" subtitle="Start importer registration" />
+      <Button onPress={startApplication}>
         Start new application
       </Button>
       <InfoCard title="Existing application">
-        <Input label="Application ID" value={applicationId} onChangeText={setApplicationId} autoCapitalize="none" />
+        <Input
+          label="Application ID"
+          value={applicationId}
+          onChangeText={(value) => {
+            setApplicationId(value);
+            if (applicationIdError) setApplicationIdError('');
+          }}
+          autoCapitalize="characters"
+          error={applicationIdError}
+        />
         <Button
-          disabled={loading || !applicationId.trim()}
+          disabled={loading}
           variant="secondary"
-          onPress={() => void lookupApplication(applicationId).then((step) => step && openStep(step))}
+          onPress={() => lookupExistingApplication(false)}
         >
           Continue application
         </Button>
         <Button
-          disabled={loading || !applicationId.trim()}
+          disabled={loading}
           variant="ghost"
-          onPress={() => void lookupApplication(applicationId, true).then((step) => step && openStep(step))}
+          onPress={() => lookupExistingApplication(true)}
         >
           Track application
         </Button>

@@ -20,7 +20,7 @@ export function OnboardingNavigator() {
       <Stack.Screen
         name="ImporterType"
         component={ImporterTypeScreen}
-        options={{ title: 'Importer Type' }}
+        options={{ title: 'Application' }}
       />
       <Stack.Screen
         name="ApplicantInformation"

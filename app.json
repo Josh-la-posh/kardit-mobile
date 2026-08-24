@@ -17,9 +17,8 @@
       "package": "com.kardit.importer"
     },
     "extra": {
-      "apiBaseUrl": "https://api.example.invalid",
-      "environment": "development",
-      "onboardingApiMode": "auto"
+      "apiBaseUrl": "http://167.172.49.177:8080",
+      "environment": "development"
     },
     "plugins": [
       "expo-asset",

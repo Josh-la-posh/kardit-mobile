@@ -1,7 +1,12 @@
 import { createContext, useContext, useEffect, useState, type PropsWithChildren } from 'react';
 
+import { getApiErrorMessage } from '@/services/api/apiError';
 import { onboardingApi } from '@/services/api/onboarding';
-import type { ImporterApplication, ImporterOnboardingDraft } from '@/types/importerOnboarding';
+import type {
+  ImporterApplication,
+  ImporterOnboardingDraft,
+  ImporterOnboardingOptions,
+} from '@/types/importerOnboarding';
 
 import {
   clearImporterOnboarding,
@@ -19,6 +24,9 @@ type ImporterOnboardingContextValue = {
   applicationId: string | undefined;
   error: string | undefined;
   loading: boolean;
+  options: ImporterOnboardingOptions | undefined;
+  optionsError: string | undefined;
+  optionsLoading: boolean;
   updateDraft: (changes: Partial<ImporterOnboardingDraft>) => void;
   saveStep: (step: 1 | 2 | 3) => Promise<boolean>;
   lookupApplication: (applicationId: string, trackOnly?: boolean) => Promise<number | undefined>;
@@ -36,6 +44,9 @@ export function ImporterOnboardingProvider({ children }: PropsWithChildren) {
   const [applicationId, setApplicationId] = useState<string>();
   const [error, setError] = useState<string>();
   const [loading, setLoading] = useState(true);
+  const [options, setOptions] = useState<ImporterOnboardingOptions>();
+  const [optionsError, setOptionsError] = useState<string>();
+  const [optionsLoading, setOptionsLoading] = useState(true);
 
   useEffect(() => {
     void Promise.all([loadImporterOnboardingDraft(), loadImporterApplicationId()]).then(
@@ -45,6 +56,19 @@ export function ImporterOnboardingProvider({ children }: PropsWithChildren) {
         setLoading(false);
       },
     );
+  }, []);
+
+  useEffect(() => {
+    void onboardingApi
+      .getImporterOnboardingOptions()
+      .then((nextOptions) => {
+        setOptions(nextOptions);
+        setOptionsError(undefined);
+      })
+      .catch((cause) => {
+        setOptionsError(getApiErrorMessage(cause, 'Unable to load onboarding options.'));
+      })
+      .finally(() => setOptionsLoading(false));
   }, []);
 
   const updateDraft = (changes: Partial<ImporterOnboardingDraft>) => {
@@ -67,7 +91,7 @@ export function ImporterOnboardingProvider({ children }: PropsWithChildren) {
       await saveImporterApplication(nextApplication, draft);
       return true;
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : 'Unable to save this step.');
+      setError(getApiErrorMessage(cause, 'Unable to save this step.'));
       return false;
     } finally {
       setLoading(false);
@@ -85,7 +109,7 @@ export function ImporterOnboardingProvider({ children }: PropsWithChildren) {
       await setExplicitResume(!trackOnly);
       return trackOnly ? 5 : nextApplication.progress?.currentStep ?? 1;
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : 'Application lookup failed.');
+      setError(getApiErrorMessage(cause, 'Application lookup failed.'));
       return undefined;
     } finally {
       setLoading(false);
@@ -107,7 +131,7 @@ export function ImporterOnboardingProvider({ children }: PropsWithChildren) {
       await saveImporterApplication(nextApplication, draft);
       return true;
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : 'Unable to submit application.');
+      setError(getApiErrorMessage(cause, 'Unable to submit application.'));
       return false;
     } finally {
       setLoading(false);
@@ -128,7 +152,7 @@ export function ImporterOnboardingProvider({ children }: PropsWithChildren) {
       await saveImporterApplication(nextApplication, draft);
       return true;
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : 'Unable to send updates.');
+      setError(getApiErrorMessage(cause, 'Unable to send updates.'));
       return false;
     } finally {
       setLoading(false);
@@ -144,7 +168,7 @@ export function ImporterOnboardingProvider({ children }: PropsWithChildren) {
       setApplication(nextApplication);
       await saveImporterApplication(nextApplication, draft);
     } catch (cause) {
-      setError(cause instanceof Error ? cause.message : 'Unable to refresh application status.');
+      setError(getApiErrorMessage(cause, 'Unable to refresh application status.'));
     } finally {
       setLoading(false);
     }
@@ -166,6 +190,9 @@ export function ImporterOnboardingProvider({ children }: PropsWithChildren) {
         draft,
         error,
         loading,
+        options,
+        optionsError,
+        optionsLoading,
         lookupApplication,
         refreshStatus,
         saveStep,

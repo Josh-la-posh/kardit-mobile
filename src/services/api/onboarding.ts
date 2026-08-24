@@ -7,8 +7,6 @@ import type {
 import type { OnboardingStatus } from '@/types/session';
 
 import { ApiError } from './apiError';
-import { apiClient } from './client';
-import { mockOnboardingApi } from './mockOnboarding';
 
 const onboardingBasePath = '/importers/onboarding';
 
@@ -116,7 +114,14 @@ const importerOnboardingRequest = async <TResponse>(path: string, init: RequestI
   });
 
   const body = await response.text();
-  const parsed = body ? (JSON.parse(body) as TResponse) : (undefined as TResponse);
+  let parsed = undefined as TResponse;
+  if (body) {
+    try {
+      parsed = JSON.parse(body) as TResponse;
+    } catch {
+      parsed = body as TResponse;
+    }
+  }
 
   if (!response.ok) {
     throw new ApiError(`Request failed (${response.status})`, response.status, parsed);
@@ -136,7 +141,9 @@ const realOnboardingApi = {
     return mapApplication(response);
   },
   getApplicationStatus: () =>
-    apiClient.get<{ status: string; nextStep?: string }>('/importers/onboarding/status'),
+    importerOnboardingRequest<{ status: string; nextStep?: string }>(
+      '/importers/onboarding/status',
+    ),
   getImporterApplication: async (applicationId: string) => {
     const response = await importerOnboardingRequest<Record<string, unknown>>(
       `${onboardingBasePath}/applications/${applicationId}`,
@@ -150,13 +157,27 @@ const realOnboardingApi = {
   getImporterOnboardingOptions: () =>
     importerOnboardingRequest<ImporterOnboardingOptions>(`${onboardingBasePath}/options`),
   getOnboardingStatus: () =>
-    apiClient.get<{ nextStep?: string; status: OnboardingStatus }>('/importers/onboarding/status'),
+    importerOnboardingRequest<{ nextStep?: string; status: OnboardingStatus }>(
+      '/importers/onboarding/status',
+    ),
   saveApplicantDetails: (payload: unknown) =>
-    apiClient.post<{ saved: boolean }>('/importers/onboarding/applicant', payload),
+    importerOnboardingRequest<{ saved: boolean }>('/importers/onboarding/applicant', {
+      body: JSON.stringify(payload),
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+    }),
   submitApplication: (payload: unknown) =>
-    apiClient.post<{ submitted: boolean }>('/importers/onboarding/submit', payload),
+    importerOnboardingRequest<{ submitted: boolean }>('/importers/onboarding/submit', {
+      body: JSON.stringify(payload),
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+    }),
   submitDocuments: (payload: unknown) =>
-    apiClient.post<{ submitted: boolean }>('/importers/onboarding/documents', payload),
+    importerOnboardingRequest<{ submitted: boolean }>('/importers/onboarding/documents', {
+      body: JSON.stringify(payload),
+      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+    }),
   submitImporterApplication: async (applicationId: string, declarationAccepted: boolean) => {
     const response = await importerOnboardingRequest<Record<string, unknown>>(
       `${onboardingBasePath}/applications/${applicationId}/submit`,
@@ -194,5 +215,4 @@ const realOnboardingApi = {
   },
 };
 
-// Uses mock mode by default while the repo still points at api.example.invalid.
-export const onboardingApi = env.useMockOnboardingApi ? mockOnboardingApi : realOnboardingApi;
+export const onboardingApi = realOnboardingApi;
